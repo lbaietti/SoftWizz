@@ -1,0 +1,720 @@
+// Ensure the DOM is fully loaded before running GSAP animations
+document.addEventListener("DOMContentLoaded", (event) => {
+    // Register the ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // --- 1. Initialize Lenis (Smooth Scrolling alternative for ScrollSmoother) ---
+    // ScrollSmoother from GSAP often requires a premium Club GreenSock license and 
+    // redirects local execution on file:// protocols. Lenis provides the exact same 
+    // smooth scrolling effect completely free and seamlessly integrates with ScrollTrigger.
+    if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+    }
+
+    // --- 2. Custom Cursor Follower ---
+    const cursor = document.querySelector('.cursor-follower');
+    if (window.matchMedia("(pointer: fine)").matches && cursor) {
+        let mouseX = 0, mouseY = 0;
+        // Setup movement with 0.15s duration for a slightly delayed "trail" effect
+        let xTo = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3" }),
+            yTo = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3" });
+
+        window.addEventListener("mousemove", e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            xTo(mouseX);
+            yTo(mouseY);
+        });
+
+        // Add hover effect for interactive elements
+        const interactables = document.querySelectorAll('a, button, .card, .btn, .map-point');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursor, {
+                    scale: 1.5,
+                    backgroundColor: 'rgba(21, 195, 107, 0.4)',
+                    borderColor: 'rgba(21, 195, 107, 0.8)',
+                    duration: 0.2
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursor, {
+                    scale: 1,
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    duration: 0.2
+                });
+            });
+        });
+
+        // Left-Click interaction (Grow, rainbow, crack, vibrate, burst, timelapse reverse)
+        let holdTween;
+        let particles = [];
+        let isBurst = false;
+
+        window.addEventListener("mousedown", e => {
+            if (e.button === 0) { // Left mouse button
+                // Reset states
+                cursor.classList.remove('vibrating', 'cracked', 'rainbow-red');
+                cursor.style.opacity = 1;
+                particles.forEach(p => p.remove());
+                particles = [];
+                isBurst = false;
+                
+                if (holdTween) holdTween.kill();
+                
+                cursor.classList.add('rainbow-red');
+                
+                // Orchestrate the 5 second sequence
+                holdTween = gsap.to(cursor, {
+                    width: 50, // Max size
+                    height: 50, // Max size
+                    duration: 5,
+                    ease: "power1.inOut",
+                    onUpdate: function() {
+                        const t = this.time();
+                        // At 3.5s start vibrating (approaching limit)
+                        if (t > 3.5 && !cursor.classList.contains('vibrating')) {
+                            cursor.classList.add('vibrating');
+                        }
+                        // At 4s crack
+                        if (t > 4.0 && !cursor.classList.contains('cracked')) {
+                            cursor.classList.add('cracked');
+                        }
+                    },
+                    onComplete: function() {
+                        // At 5s: Burst!
+                        isBurst = true;
+                        cursor.style.opacity = 0;
+                        cursor.classList.remove('vibrating', 'cracked', 'rainbow-red');
+                        
+                        const rect = cursor.getBoundingClientRect();
+                        const cx = rect.left + rect.width / 2;
+                        const cy = rect.top + rect.height / 2;
+                        
+                        for (let i = 0; i < 40; i++) {
+                            const p = document.createElement('div');
+                            p.classList.add('cursor-particle');
+                            p.style.left = cx + 'px';
+                            p.style.top = cy + 'px';
+                            document.body.appendChild(p);
+                            particles.push(p);
+                            
+                            const angle = Math.random() * Math.PI * 2;
+                            const velocity = 50 + Math.random() * 250;
+                            
+                            gsap.to(p, {
+                                x: Math.cos(angle) * velocity,
+                                y: Math.sin(angle) * velocity,
+                                duration: 1.5 + Math.random(),
+                                ease: "expo.out"
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        window.addEventListener("mouseup", e => {
+            if (e.button === 0) { // Left mouse button release
+                if (holdTween) holdTween.kill();
+                
+                if (isBurst) {
+                    // Timelapse effect: pull particles back to current mouse
+                    gsap.killTweensOf(particles);
+                    gsap.to(particles, {
+                        x: 0,
+                        y: 0,
+                        left: mouseX,
+                        top: mouseY,
+                        duration: 1.2, // Ultra smooth slow return
+                        ease: "power3.inOut",
+                        stagger: 0.008,
+                        onCompleteAll: () => {
+                            particles.forEach(p => p.remove());
+                            particles = [];
+                            isBurst = false;
+                            
+                            // Re-show main cursor and reset size
+                            cursor.style.opacity = 1;
+                            gsap.to(cursor, { width: 8, height: 8, duration: 0.3, ease: "back.out(1.7)" });
+                        }
+                    });
+                } else {
+                    // Released early, just shrink
+                    cursor.classList.remove('vibrating', 'cracked', 'rainbow-red');
+                    gsap.to(cursor, {
+                        width: 8, // Return to base size
+                        height: 8,
+                        duration: 0.4,
+                        ease: "elastic.out(1, 0.5)"
+                    });
+                }
+            }
+        });
+    }
+
+    // --- 3. Timeline for initial load animations ---
+    const tl = gsap.timeline();
+
+    tl.from(".main-title", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out"
+    })
+        .from(".subtitle", {
+            y: 20,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "-=0.4")
+
+        .from(".card", {
+            y: 80,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2, // Adds a delay between each card
+            ease: "power4.out"
+        }, "-=0.2");
+
+    gsap.from(".gen-ai-badge", {
+        x: 50,
+        opacity: 0,
+        duration: 1,
+        delay: 1.2,
+        ease: "elastic.out(1, 0.7)"
+    });
+
+    gsap.from(".bottom-title", {
+        scrollTrigger: {
+            trigger: ".section-footer",
+            start: "top 85%", // when top of trigger hits 85% of viewport
+            toggleActions: "play none none reverse"
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+    });
+
+    // Subtly hover cards using GSAP
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            gsap.to(card, { y: -10, duration: 0.3, ease: 'power2.out', boxShadow: '0 30px 60px -12px rgba(21, 195, 107, 0.2)' });
+        });
+        card.addEventListener('mouseleave', () => {
+            gsap.to(card, { y: 0, duration: 0.3, ease: 'power2.out', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' });
+        });
+    });
+
+    // --- 3.5 Interactive 3D Globe ---
+    const mapTl = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".map-section",
+            start: "top 70%",
+            toggleActions: "play none none reverse"
+        }
+    });
+
+    mapTl.from(".map-title", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out"
+    })
+    .from(".globe-viz", {
+        scale: 0.8,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+    }, "-=0.4");
+
+    // WebGL Globe interaction logic
+    const globeViz = document.getElementById('globe-viz');
+    if (globeViz && typeof Globe !== 'undefined') {
+        const locations = [
+            { id: 'point-brazil', lat: -10, lng: -55 },
+            { id: 'point-portugal', lat: 39, lng: -8 },
+            { id: 'point-uk', lat: 55, lng: -3 },
+            { id: 'point-germany', lat: 51, lng: 10 }
+        ];
+
+        locations.forEach(loc => {
+            loc.el = document.getElementById(loc.id);
+            if (loc.el) loc.el.style.display = 'block'; // Make visible when appended by Globe.gl
+        });
+
+        // Initialize Globe
+        const world = Globe()(globeViz)
+            .backgroundColor('rgba(0,0,0,0)')
+            .showGlobe(false)
+            .showAtmosphere(true)
+            .atmosphereColor('#15c36b')
+            .atmosphereAltitude(0.15)
+            .hexPolygonResolution(3)
+            .hexPolygonMargin(0.3)
+            .hexPolygonColor(() => '#15c36b')
+            .htmlElementsData(locations)
+            .htmlElement(d => {
+                // Ensure card styles pop up nicely centered on the point
+                if (d.el) {
+                    d.el.style.transform = 'translate(-50%, -50%)';
+                    d.el.style.pointerEvents = 'auto'; // allow hover
+                }
+                return d.el;
+            }); 
+
+        // Override controls for auto-rotation and disable zoom
+        world.controls().autoRotate = true;
+        world.controls().autoRotateSpeed = 0.5;
+        world.controls().enableZoom = false;
+
+        // Fetch data and populate
+        fetch('https://unpkg.com/world-atlas@2.0.2/countries-110m.json')
+            .then(res => res.json())
+            .then(topoData => {
+                if (typeof topojson !== 'undefined') {
+                    const geoData = topojson.feature(topoData, topoData.objects.countries).features;
+                    world.hexPolygonsData(geoData);
+                }
+            });
+    }
+
+    // --- 4. Solid Background Text Theme Logic (Removed, Keeping Default Dark) ---
+
+    // --- 5. Terminal Profile Animation ---
+    const termBody = document.getElementById('term-body');
+    if (termBody) {
+        let hasTriggered = false;
+
+        ScrollTrigger.create({
+            trigger: ".services-info",
+            start: "top 70%",
+            onEnter: () => {
+                if (!hasTriggered) {
+                    hasTriggered = true;
+                    runTerminalSequence();
+                }
+            }
+        });
+
+        function runTerminalSequence() {
+            termBody.innerHTML = '';
+            
+            // 1. Initial Prompt
+            const line1 = document.createElement('div');
+            line1.className = 'term-line';
+            line1.innerHTML = `<span class="term-prompt">Softwizz@portfolio:~$</span> <span class="typed-cmd"></span><span class="term-caret id-caret-1"></span>`;
+            termBody.appendChild(line1);
+
+            const typedCmd = line1.querySelector('.typed-cmd');
+            const caret1 = line1.querySelector('.id-caret-1');
+            const cmdText = "whoami";
+            
+            // Type command
+            let i = 0;
+            const typeInterval = setInterval(() => {
+                typedCmd.textContent += cmdText.charAt(i);
+                i++;
+                if (i >= cmdText.length) {
+                    clearInterval(typeInterval);
+                    caret1.style.display = 'none';
+                    
+                    // 2. Execute command
+                    setTimeout(() => {
+                        const line2 = document.createElement('div');
+                        line2.className = 'term-line';
+                        line2.style.color = '#fff';
+                        line2.innerHTML = `Estudante de Engenharia Informática em Lisboa que nas horas vagas presta serviços na área da Tecnologia da Informação e Desenvolvimento Web para pequenas e médias empresas com um valor acessível.`;
+                        termBody.appendChild(line2);
+                        
+                        // 3. Ask to continue
+                        setTimeout(() => {
+                            const line3 = document.createElement('div');
+                            line3.className = 'term-line';
+                            line3.innerHTML = `<span class="term-prompt">Softwizz@portfolio:~$</span> Do you want to continue [Y/N] <span class="term-caret id-caret-2"></span>`;
+                            termBody.appendChild(line3);
+                            
+                            const caret2 = line3.querySelector('.id-caret-2');
+                            
+                            // 4. Wait for Y
+                            const handleKey = (e) => {
+                                const k = e.key.toLowerCase();
+                                if ((k === 'y' || k === 'n') && !e.ctrlKey && !e.metaKey) {
+                                    window.removeEventListener('keydown', handleKey);
+                                    caret2.insertAdjacentText('beforebegin', e.key.toUpperCase());
+                                    caret2.style.display = 'none';
+                                    
+                                    if (k === 'y') {
+                                        // 5. Start Download
+                                        setTimeout(startDownload, 500);
+                                    } else {
+                                        setTimeout(promptGame, 500);
+                                    }
+                                }
+                            };
+                            window.addEventListener('keydown', handleKey);
+                            
+                        }, 1200);
+                        
+                    }, 600);
+                }
+            }, 120);
+        }
+        
+        function promptGame() {
+            const line = document.createElement('div');
+            line.className = 'term-line';
+            line.style.marginTop = '20px';
+            line.style.color = '#ffbd2e';
+            line.innerHTML = `<br>--- SYSTEM OVERRIDE ---<br>Type [SPACE] to play a game...`;
+            termBody.appendChild(line);
+            
+            setTimeout(initAlienGame, 500);
+        }
+        
+        function startDownload() {
+            const line4 = document.createElement('div');
+            line4.className = 'term-progress';
+            termBody.appendChild(line4);
+            
+            let progress = 0;
+            const totalBars = 30;
+            
+            const dlInterval = setInterval(() => {
+                progress += Math.random() * 5 + 2; // approx 4.5% increments
+                if (progress >= 100) progress = 100;
+                
+                const filled = Math.floor((progress / 100) * totalBars);
+                const empty = totalBars - filled;
+                
+                const barStr = `<span style="color: var(--green-light)">${'█'.repeat(filled)}</span><span style="color: #444">${'█'.repeat(empty)}</span>`;
+                line4.innerHTML = `[${barStr}] ${progress.toFixed(1)}% Gerando acesso ao meu repositório no GitHub ;)`;
+                
+                if (progress === 100) {
+                    clearInterval(dlInterval);
+                    setTimeout(() => {
+                        line4.innerHTML += `<br><br><span style="color:#fff">Acesso Concedido. Abrindo link do repositório...</span><br><br><a href="https://github.com" target="_blank" style="color: var(--green-light); text-decoration: underline;">https://github.com/Softwizz</a>`;
+                        setTimeout(promptGame, 1000);
+                    }, 500);
+                }
+            }, 250); 
+        }
+
+        function initAlienGame() {
+            if (document.getElementById('alien-game-canvas')) return;
+
+            const canvas = document.createElement('canvas');
+            canvas.id = 'alien-game-canvas';
+            const cw = termBody.clientWidth - 60;
+            canvas.width = cw > 0 ? cw : 600;
+            canvas.height = 150;
+            canvas.style.display = 'block';
+            canvas.style.marginTop = '20px';
+            canvas.style.border = '1px dashed #15c36b';
+            canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
+            termBody.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            
+            let isPlaying = false;
+            let isGameOver = false;
+            let score = 0;
+            let isLightModeTriggered = false;
+            let isDarkModeRestored = false;
+            
+            let alien = { x: 50, y: 110, size: 24, dy: 0, jumpPower: -10, gravity: 0.6, isGrounded: true };
+            let obstacles = [];
+            let frameCount = 0;
+            let speedMod = 1;
+            
+            function resetGame() {
+                alien.y = 110;
+                alien.dy = 0;
+                alien.isGrounded = true;
+                obstacles = [];
+                score = 0;
+                frameCount = 0;
+                speedMod = 1;
+                isGameOver = false;
+                
+                if (isLightModeTriggered && !isDarkModeRestored) {
+                    changeToDarkMode();
+                }
+                isLightModeTriggered = false;
+                isDarkModeRestored = false;
+            }
+            
+            function jump() {
+                if (alien.isGrounded) {
+                    alien.dy = alien.jumpPower;
+                    alien.isGrounded = false;
+                }
+            }
+            
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    // Start only if terminal is somewhat in view
+                    const rect = canvas.getBoundingClientRect();
+                    if (rect.top >= 0 && rect.bottom <= window.innerHeight + 200) {
+                        e.preventDefault(); 
+                        if (!isPlaying) {
+                            isPlaying = true;
+                            resetGame();
+                            gameLoop();
+                        } else if (isGameOver) {
+                            resetGame();
+                        } else {
+                            jump();
+                        }
+                    }
+                }
+            });
+
+            function changeToLightMode() {
+                gsap.to("body", { backgroundColor: "#fffce1", color: "#191919", duration: 1.5 });
+                gsap.to(".map-section", { backgroundColor: "transparent", backgroundImage: "none", duration: 1.5 });
+                gsap.to(".navbar .logo, .menu-horizontal li a", { color: "#15c36b", borderColor: "rgba(25, 25, 25, 0.2)", background: "rgba(25, 25, 25, 0.05)", duration: 1.5 });
+                gsap.to(".bottom-title, .map-section h2, .services-slider h2, .slider-container h3", { color: "#191919", duration: 1.5 });
+            }
+
+            function changeToDarkMode() {
+                gsap.to("body", { backgroundColor: "#0f0f0f", color: "#ffffff", duration: 1.5 });
+                gsap.to(".map-section", { clearProps: "all", duration: 1.5 });
+                gsap.to(".navbar .logo, .menu-horizontal li a", { clearProps: "all", duration: 1.5 });
+                gsap.to(".bottom-title, .map-section h2, .services-slider h2, .slider-container h3", { clearProps: "all", duration: 1.5 });
+            }
+            
+            function update() {
+                alien.y += alien.dy;
+                alien.dy += alien.gravity;
+                if (alien.y >= 110) { alien.y = 110; alien.dy = 0; alien.isGrounded = true; }
+                
+                if (frameCount % 300 === 0 && frameCount > 0) speedMod += 0.15;
+                
+                if (frameCount % Math.max(30, Math.floor(90 / speedMod)) === 0 && Math.random() > 0.4) {
+                    obstacles.push({ x: canvas.width, y: 118, width: 20, height: 20 });
+                }
+                
+                obstacles.forEach(obs => obs.x -= (6 * speedMod));
+                obstacles = obstacles.filter(obs => obs.x > -50);
+                
+                obstacles.forEach(obs => {
+                    // Collision
+                    if (alien.x < obs.x + obs.width && alien.x + alien.size > obs.x &&
+                        alien.y > obs.y - obs.height && alien.y - alien.size < obs.y) {
+                        isGameOver = true;
+                    }
+                });
+                
+                if (frameCount % 6 === 0) {
+                    score++; // Progress score slowly like Chrome Dino
+                }
+
+                if (score >= 500 && score < 1000 && !isLightModeTriggered) {
+                    isLightModeTriggered = true;
+                    changeToLightMode();
+                }
+                
+                // Win Condition
+                if (score >= 1000 && !isDarkModeRestored) {
+                    isDarkModeRestored = true;
+                    changeToDarkMode();
+                    isGameOver = true; 
+                }
+                
+                frameCount++;
+            }
+            
+            function gameLoop() {
+                if (isGameOver) {
+                    if (score >= 1000) {
+                        ctx.fillStyle = '#ffbd2e';
+                        ctx.font = '20px Courier New';
+                        ctx.fillText('🏆 YOU BEAT THE SYSTEM 🏆', canvas.width/2 - 140, 60);
+                        ctx.fillStyle = '#15c36b';
+                        ctx.font = '16px Courier New';
+                        ctx.fillText('Mainframe Dark Mode Restored.', canvas.width/2 - 145, 90);
+                    } else {
+                        ctx.fillStyle = '#ff5f56';
+                        ctx.font = '20px Courier New';
+                        ctx.fillText('GAME OVER - Press Space to Retry', canvas.width/2 - 170, 80);
+                    }
+                    return; // Stop requesting animation frame
+                }
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Ground
+                ctx.beginPath();
+                ctx.moveTo(0, 120);
+                ctx.lineTo(canvas.width, 120);
+                ctx.strokeStyle = '#15c36b';
+                ctx.stroke();
+                
+                update();
+                
+                // Draw entities
+                ctx.font = '30px Arial';
+                ctx.fillText('👽', alien.x, alien.y);
+                ctx.font = '25px Arial';
+                obstacles.forEach(obs => ctx.fillText('🛸', obs.x, obs.y));
+                
+                // Score
+                ctx.fillStyle = '#15c36b';
+                ctx.font = '16px Courier New';
+                const scoreText = `Score: ${score.toString().padStart(4, '0')} / 1000`;
+                ctx.fillText(scoreText, canvas.width - 200, 30);
+                
+                if (score >= 500 && score < 1000) {
+                    ctx.fillStyle = '#ffbd2e';
+                    ctx.fillText(`🌟 LIGHT MODE ENGAGED 🌟`, canvas.width/2 - 130, 40);
+                }
+                
+                requestAnimationFrame(gameLoop);
+            }
+            
+            // Initial render
+            ctx.fillStyle = '#15c36b';
+            ctx.font = '20px Courier New';
+            ctx.fillText('Press SPACE to start', canvas.width/2 - 120, 80);
+        }
+    }
+
+    // --- 5. Horizontal Slider Animation ---
+    const sliderContainer = document.querySelector(".slider-container");
+    const slides = gsap.utils.toArray(".slide");
+
+    if (sliderContainer && slides.length > 0) {
+        gsap.to(slides, {
+            xPercent: -100 * (slides.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".services-slider",
+                pin: true,
+                scrub: 1, // Smooth scrub
+                snap: 1 / (slides.length - 1),
+                end: () => "+=" + sliderContainer.offsetWidth
+            }
+        });
+    }
+
+    // --- 6. Interactive Cmatrix Effect ---
+    const matrixCanvas = document.getElementById('matrix-canvas');
+    if (matrixCanvas && window.matchMedia("(pointer: fine)").matches) {
+        const ctx = matrixCanvas.getContext('2d');
+        let width, height, cols, rows;
+        const matrixFontSize = 16;
+        let grid = [];
+        let drops = [];
+
+        // Function to get random latin chars, numbers, or symbols
+        function getRandomChar() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+{}[]|:;<>,.?/~";
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        function resizeMatrix() {
+            width = matrixCanvas.width = window.innerWidth;
+            const sectionHeight = document.querySelector('.landing-section').offsetHeight;
+            height = matrixCanvas.height = sectionHeight;
+            cols = Math.ceil(width / matrixFontSize);
+            rows = Math.ceil(height / matrixFontSize);
+
+            grid = Array.from({ length: cols }, () =>
+                Array.from({ length: rows }, () => ({
+                    char: getRandomChar(),
+                    brightness: 0
+                }))
+            );
+            drops = Array(cols).fill(0).map(() => Math.random() * -rows);
+        }
+
+        resizeMatrix();
+        window.addEventListener('resize', resizeMatrix);
+
+        let mouseX = -1000, mouseY = -1000;
+        window.addEventListener('mousemove', e => {
+            const rect = matrixCanvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(25, 25, 25, 1)"; // match #191919
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < cols; i++) {
+                drops[i] += 0.4;
+                let r = Math.floor(drops[i]);
+                if (r >= 0 && r < rows) {
+                    grid[i][r].brightness = 1;
+                    if (Math.random() < 0.1) {
+                        grid[i][r].char = getRandomChar();
+                    }
+                }
+                if (drops[i] * matrixFontSize > height && Math.random() > 0.95) {
+                    drops[i] = 0;
+                }
+            }
+
+            ctx.font = matrixFontSize + "px monospace";
+            ctx.textAlign = "center";
+            const repelRadius = 80;
+
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    let cell = grid[i][j];
+                    if (cell.brightness > 0) {
+                        cell.brightness -= 0.012;
+                        if (cell.brightness < 0) cell.brightness = 0;
+
+                        let bx = i * matrixFontSize + matrixFontSize / 2;
+                        let by = j * matrixFontSize + matrixFontSize;
+
+                        let dist = Math.hypot(mouseX - bx, mouseY - by);
+                        let dx = 0, dy = 0;
+                        if (dist < repelRadius) {
+                            let force = (repelRadius - dist) / repelRadius;
+                            force = force * force;
+                            let angle = Math.atan2(by - mouseY, bx - mouseX);
+                            dx = Math.cos(angle) * force * 25;
+                            dy = Math.sin(angle) * force * 25;
+                        }
+
+                        if (cell.brightness > 0.8) {
+                            ctx.fillStyle = `rgba(21, 195, 107, ${cell.brightness})`;
+                            ctx.shadowBlur = 5;
+                            ctx.shadowColor = "#3ef499";
+                        } else {
+                            ctx.fillStyle = `rgba(0, 143, 17, ${cell.brightness})`;
+                            ctx.shadowBlur = 0;
+                        }
+
+                        ctx.fillText(cell.char, bx + dx, by + dy);
+                    }
+                }
+            }
+            requestAnimationFrame(drawMatrix);
+        }
+        drawMatrix();
+    }
+});

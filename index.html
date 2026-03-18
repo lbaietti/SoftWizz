@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softwizz - AI Changing Software Development</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Globe.gl & TopoJSON -->
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+</head>
+
+<body>
+    <div class="cursor-follower"></div>
+
+    <!-- Horizontal Navbar matching previous request -->
+    <header class="navbar">
+        <div class="logo">Softwizz</div>
+        <nav>
+            <ul class="menu-horizontal">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="landing-section">
+        <!-- Matrix Canvas Background -->
+        <canvas id="matrix-canvas"></canvas>
+        <div class="matrix-fade-bottom"></div>
+
+        <div class="landing-content-wrapper">
+            <!-- Header Section -->
+            <div class="text-center section-header">
+                <h1 class="main-title">Software Development <span class="text-green">in a Wise Way</span></h1>
+                <p class="subtitle">® by: Lucas Baietti</p>
+            </div>
+
+            <!-- Cards Section -->
+            <div class="cards-container">
+                <!-- Card 1: For Developers -->
+                <div class="card card-dev">
+                    <div class="card-content">
+                        <h2>Voltado para PME's</h2>
+                        <p class="card-desc">HackerRank helps you hone your developer skills and become GenAI-ready.</p>
+
+                        <ul class="feature-list">
+                            <li>Track your skill proficiency</li>
+                            <li>Prepare for technical interviews</li>
+                            <li>Learn the latest GenAI skills</li>
+                        </ul>
+
+                        <div class="card-action">
+                            <a href="#" class="btn btn-primary">Explore HackerRank Community</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: For Business -->
+                <div class="card card-business">
+                    <div class="card-content">
+                        <h2>Para Parcerias e Projectos</h2>
+                        <p class="card-desc">Get your company GenAI ready</p>
+
+                        <ul class="feature-list">
+                            <li>Attract and hire the right developers</li>
+                            <li>Upskill your team with the latest GenAI skills</li>
+                            <li>Build out your AI platform team</li>
+                        </ul>
+
+                        <div class="card-action">
+                            <a href="#" class="btn btn-secondary">Explore HackerRank Community</a>
+                        </div>
+                    </div>
+
+                    <!-- Decorative element to fake the image from reference -->
+                    <div class="gen-ai-badge">GenAI</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="text-center section-footer">
+            <h2 class="bottom-title"><span class="text-green">AI Changing</span><br>Software Development</h2>
+        </div>
+    </main>
+
+    <!-- NEW SECTION 2: Interactive Map -->
+    <section class="map-section" id="global-reach">
+        <div class="shooting-star" style="top: 15%; left: 10%; --angle: 15deg; animation-delay: 0.5s;"></div>
+        <div class="shooting-star" style="top: 45%; left: 60%; --angle: -30deg; animation-delay: 3s;"></div>
+        <div class="shooting-star" style="top: 80%; left: 20%; --angle: -60deg; animation-delay: 6s;"></div>
+        <div class="shooting-star" style="top: 25%; left: 80%; --angle: 45deg; animation-delay: 8s;"></div>
+        <div class="map-container">
+            <h2 class="text-center map-title">Our Global <span class="text-green">Impact</span></h2>
+
+            <div class="map-wrapper" id="map-wrapper-id">
+                <div id="globe-viz" class="globe-viz"></div>
+
+                <!-- Map Points (Hidden container, will be injected into globe) -->
+                <div id="geo-points" style="display: none;">
+                    <!-- Map Point: Brazil -->
+                    <div class="map-point" id="point-brazil">
+                        <div class="pulse-dot"></div>
+                        <div class="project-card">
+                            <h3>Fintech Dashboard</h3>
+                            <p>São Paulo, Brazil</p>
+                            <a href="#" class="view-project-link">View Project <span>→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Map Point: Portugal -->
+                    <div class="map-point" id="point-portugal">
+                        <div class="pulse-dot"></div>
+                        <div class="project-card">
+                            <h3>Cloud Logistics Hub</h3>
+                            <p>Lisbon, Portugal</p>
+                            <a href="#" class="view-project-link">View Project <span>→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Map Point: UK -->
+                    <div class="map-point" id="point-uk">
+                        <div class="pulse-dot"></div>
+                        <div class="project-card">
+                            <h3>AI Healthcare App</h3>
+                            <p>London, UK</p>
+                            <a href="#" class="view-project-link">View Project <span>→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Map Point: Germany -->
+                    <div class="map-point" id="point-germany">
+                        <div class="pulse-dot"></div>
+                        <div class="project-card">
+                            <h3>Smart Grid System</h3>
+                            <p>Berlin, Germany</p>
+                            <a href="#" class="view-project-link">View Project <span>→</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Services Info (Terminal Profile) -->
+    <section class="services-info" id="services">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="term-btns">
+                    <span class="term-btn term-close"></span>
+                    <span class="term-btn term-min"></span>
+                    <span class="term-btn term-max"></span>
+                </div>
+                <div class="term-title">Softwizz@portfolio:~</div>
+            </div>
+            <div class="terminal-body" id="term-body">
+                <!-- Javascript will populate this terminal -->
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Services Slider -->
+    <section class="services-slider">
+        <div class="slider-container">
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80"
+                    alt="Web Development">
+                <h3>Desenvolvimento Web</h3>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+                    alt="Cloud Integration">
+                <h3>Automatizações</h3>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
+                    alt="Data Analytics">
+                <h3>Integração na Nuvem</h3>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80"
+                    alt="Artificial Intelligence">
+                <h3>Inteligência Artificial</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>Softwizz</h3>
+                <p>Building the technological foundation of tomorrow. Elevating teams and scaling products globally.</p>
+
+
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p>Phone: +1 (555) 123-4567</p>
+                <p>Email: hello@softwizz.com</p>
+                <p>Address: 123 Innovation Drive, Tech City, TC 90210</p>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Softwizz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Smooth Scrolling -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.36/dist/lenis.min.js"></script>
+
+    <!-- App Scripts -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
