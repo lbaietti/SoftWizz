@@ -1019,8 +1019,18 @@ html {
     font-size: 0.85rem;
 }
 
+.mobile-hint {
+    display: none;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 /* --- Mobile Responsive Adjustments --- */
 @media (max-width: 768px) {
+    .mobile-hint {
+        display: inline-block;
+        animation: pulse 2s infinite;
+    }
+
     /* Mapeamento 3D: Reduz a caixa e altura para criar margem nas bordas */
     .map-wrapper {
         width: 90vw;
