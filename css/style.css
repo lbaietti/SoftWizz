@@ -231,6 +231,20 @@ html {
     transform: translateY(-2px);
 }
 
+.btn-whatsapp {
+    background-color: #25D366;
+    color: #fff;
+    border: 1px solid #25D366;
+}
+
+.btn-whatsapp:hover {
+    background-color: #1ebe5d;
+    border-color: #1ebe5d;
+    transform: translateY(-2px);
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+}
+
 /* Decorative Badge */
 .gen-ai-badge {
     position: absolute;

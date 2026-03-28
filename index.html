@@ -31,14 +31,14 @@
         <div class="logo">Softwizz</div>
         <nav>
             <ul class="menu-horizontal">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services-slider">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="landing-section">
+    <main class="landing-section" id="home">
         <!-- Matrix Canvas Background -->
         <canvas id="matrix-canvas"></canvas>
         <div class="matrix-fade-bottom"></div>
@@ -61,11 +61,13 @@
                         <ul class="feature-list">
                             <li>Sistemas Web</li>
                             <li>Aplicativos Mobile</li>
-                            <li>Sistemas com IA</li>
+                            <li>Modelação de Sistemas</li>
                         </ul>
 
-                        <div class="card-action">
-                            <a href="#" class="btn btn-primary">Explorar Projectos</a>
+                        <div class="card-action" style="display: flex; gap: 10px;">
+                            <a href="#contact" class="btn btn-primary">Entre em Contacto</a>
+                            <a href="https://wa.me/351999999999?text=Ol%C3%A1!%20Gostaria%20de%20falar%20sobre%20um%20projeto."
+                                target="_blank" class="btn btn-whatsapp">WhatsApp</a>
                         </div>
                     </div>
                 </div>
@@ -81,10 +83,6 @@
                             <li>Integração com a Nuvem</li>
                             <li>Planeamento de Sistemas e Arquitetura UML</li>
                         </ul>
-
-                        <div class="card-action">
-                            <a href="#" class="btn btn-secondary">Explorar Projectos</a>
-                        </div>
                     </div>
 
                     <!-- Decorative element to fake the image from reference -->
@@ -171,7 +169,7 @@
     </section>
 
     <!-- NEW SECTION: Services Slider -->
-    <section class="services-slider">
+    <section class="services-slider" id="services-slider">
         <div class="slider-container">
             <div class="slide">
                 <img src="assets/fotis-fotopoulos-DuHKoV44prg-unsplash.jpg" alt="Web Development">
@@ -195,7 +193,7 @@
     <!-- NEW SECTION: Contact Form -->
     <section class="contact-section" id="contact">
         <div class="contact-container">
-            <h2>Let's build something <span style="color: var(--green-light);">together</span></h2>
+            <h2>Vamos construir algo <span style="color: var(--green-light);">juntos</span></h2>
             <p>Se tiver um projeto em mente ou precisar de serviços, deixe a sua mensagem abaixo e entrarei em contacto
                 o mais breve possível!</p>
             <form action="#" method="POST" class="contact-form">
@@ -203,7 +201,7 @@
                     <input type="text" id="name" name="name" placeholder="O seu Nome" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" id="email" name="email" placeholder="O seu melhor E-mail" required>
+                    <input type="email" id="email" name="email" placeholder="E-mail" required>
                 </div>
                 <div class="form-group">
                     <textarea id="message" name="message" placeholder="Como posso ajudar com a sua ideia?" rows="5"

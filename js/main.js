@@ -441,7 +441,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             let isLightModeTriggered = false;
             let isDarkModeRestored = false;
 
-            let alien = { x: 50, y: 110, size: 24, dy: 0, jumpPower: -10, gravity: 0.6, isGrounded: true };
+            let alien = { x: 50, y: 110, size: 24, dy: 0, jumpPower: -10, gravity: 0.9, isGrounded: true };
             let obstacles = [];
             let frameCount = 0;
             let speedMod = 1;
@@ -489,12 +489,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 }
             });
 
-            function changeToLightMode() {
-                gsap.to("body", { backgroundColor: "#fffce1", color: "#191919", duration: 1.5 });
-                gsap.to(".map-section", { backgroundColor: "transparent", backgroundImage: "none", duration: 1.5 });
-                gsap.to(".navbar .logo, .menu-horizontal li a", { color: "#15c36b", borderColor: "rgba(25, 25, 25, 0.2)", background: "rgba(25, 25, 25, 0.05)", duration: 1.5 });
-                gsap.to(".bottom-title, .map-section h2, .services-slider h2, .slider-container h3", { color: "#191919", duration: 1.5 });
-            }
+            // changeToLightMode is now at wider scope
 
             function changeToDarkMode() {
                 gsap.to("body", { backgroundColor: "#0f0f0f", color: "#ffffff", duration: 1.5 });
@@ -716,5 +711,51 @@ document.addEventListener("DOMContentLoaded", (event) => {
             requestAnimationFrame(drawMatrix);
         }
         drawMatrix();
+    }
+
+    // --- 7. Global Light Mode Interactor & Contact Form ---
+    function changeToLightMode() {
+        gsap.to("body", { backgroundColor: "#fffce1", color: "#191919", duration: 1.5 });
+        gsap.to(".map-section", { backgroundColor: "transparent", backgroundImage: "none", duration: 1.5 });
+        gsap.to(".navbar .logo, .menu-horizontal li a", { color: "#15c36b", borderColor: "rgba(25, 25, 25, 0.2)", background: "rgba(25, 25, 25, 0.05)", duration: 1.5 });
+        gsap.to(".bottom-title, .map-section h2, .services-slider h2, .slider-container h3, .contact-container h2, .contact-container p, .form-group input, .form-group textarea", { color: "#191919", borderColor: "#191919", duration: 1.5 });
+    }
+
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            // Trigger Easter Egg Light Mode
+            changeToLightMode();
+            
+            const btn = this.querySelector('button[type="submit"]');
+            btn.textContent = 'Enviando...';
+            btn.disabled = true;
+            
+            // Submit form data using Fetch to Web3Forms API
+            const formData = new FormData(this);
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                    btn.textContent = 'Mensagem Enviada!';
+                    btn.style.backgroundColor = '#15c36b';
+                    alert("Mensagem enviada com sucesso! Um e-mail de confirmação será enviado a você. O Console Light-Mode foi ativado.");
+                    contactForm.reset();
+                } else {
+                    btn.textContent = 'Erro ao enviar.';
+                    btn.style.backgroundColor = '#ff5f56';
+                    console.log(response);
+                }
+            })
+            .catch(error => {
+                btn.textContent = 'Erro de Conexão.';
+                console.log(error);
+            });
+        });
     }
 });
