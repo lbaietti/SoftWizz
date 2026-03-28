@@ -316,6 +316,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // --- 5. Terminal Profile Animation ---
     const termBody = document.getElementById('term-body');
+    const termWindow = document.getElementById('term-window');
+    const mobileInput = document.getElementById('mobile-keyboard-trigger');
+
+    if (termWindow && mobileInput) {
+        // Tocar na janela do terminal na versão mobile dispara a abertura do teclado
+        termWindow.addEventListener('click', () => {
+            mobileInput.focus();
+        });
+        
+        mobileInput.addEventListener('input', () => {
+            const val = mobileInput.value.toLowerCase();
+            if (val.length > 0) {
+                const char = val[val.length - 1];
+                let code = '';
+                if (char === 'y') code = 'KeyY';
+                else if (char === 'n') code = 'KeyN';
+                else if (char === ' ') code = 'Space';
+                
+                if (code) {
+                    window.dispatchEvent(new KeyboardEvent('keydown', { code: code, key: char }));
+                }
+                mobileInput.value = '';
+            }
+        });
+    }
+
     if (termBody) {
         let hasTriggered = false;
 
@@ -364,7 +390,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         setTimeout(() => {
                             const line3 = document.createElement('div');
                             line3.className = 'term-line';
-                            line3.innerHTML = `<span class="term-prompt">Softwizz@portfolio:~$</span> Do you want to continue [Y/N] <span class="term-caret id-caret-2"></span>`;
+                            line3.innerHTML = `<span class="term-prompt">Softwizz@portfolio:~$</span> Do you want to continue [Y/N] <span class="term-caret id-caret-2"></span> <span class="mobile-hint">(Toque para teclado)</span>`;
                             termBody.appendChild(line3);
 
                             const caret2 = line3.querySelector('.id-caret-2');
@@ -399,7 +425,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             line.className = 'term-line';
             line.style.marginTop = '20px';
             line.style.color = '#ffbd2e';
-            line.innerHTML = `<br>--- SYSTEM OVERRIDE ---<br>Type [SPACE] to play a game...`;
+            line.innerHTML = `<br>--- SYSTEM OVERRIDE ---<br>Type [SPACE] to play a game... <span class="mobile-hint">(Toque o terminal)</span>`;
             termBody.appendChild(line);
 
             setTimeout(initAlienGame, 500);
