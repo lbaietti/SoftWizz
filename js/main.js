@@ -76,18 +76,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 particles.forEach(p => p.remove());
                 particles = [];
                 isBurst = false;
-                
+
                 if (holdTween) holdTween.kill();
-                
+
                 cursor.classList.add('rainbow-red');
-                
+
                 // Orchestrate the 5 second sequence
                 holdTween = gsap.to(cursor, {
                     width: 50, // Max size
                     height: 50, // Max size
                     duration: 5,
                     ease: "power1.inOut",
-                    onUpdate: function() {
+                    onUpdate: function () {
                         const t = this.time();
                         // At 3.5s start vibrating (approaching limit)
                         if (t > 3.5 && !cursor.classList.contains('vibrating')) {
@@ -98,16 +98,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
                             cursor.classList.add('cracked');
                         }
                     },
-                    onComplete: function() {
+                    onComplete: function () {
                         // At 5s: Burst!
                         isBurst = true;
                         cursor.style.opacity = 0;
                         cursor.classList.remove('vibrating', 'cracked', 'rainbow-red');
-                        
+
                         const rect = cursor.getBoundingClientRect();
                         const cx = rect.left + rect.width / 2;
                         const cy = rect.top + rect.height / 2;
-                        
+
                         for (let i = 0; i < 40; i++) {
                             const p = document.createElement('div');
                             p.classList.add('cursor-particle');
@@ -115,10 +115,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
                             p.style.top = cy + 'px';
                             document.body.appendChild(p);
                             particles.push(p);
-                            
+
                             const angle = Math.random() * Math.PI * 2;
                             const velocity = 50 + Math.random() * 250;
-                            
+
                             gsap.to(p, {
                                 x: Math.cos(angle) * velocity,
                                 y: Math.sin(angle) * velocity,
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         window.addEventListener("mouseup", e => {
             if (e.button === 0) { // Left mouse button release
                 if (holdTween) holdTween.kill();
-                
+
                 if (isBurst) {
                     // Timelapse effect: pull particles back to current mouse
                     gsap.killTweensOf(particles);
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                             particles.forEach(p => p.remove());
                             particles = [];
                             isBurst = false;
-                            
+
                             // Re-show main cursor and reset size
                             cursor.style.opacity = 1;
                             gsap.to(cursor, { width: 8, height: 8, duration: 0.3, ease: "back.out(1.7)" });
@@ -240,12 +240,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
         duration: 0.8,
         ease: "power3.out"
     })
-    .from(".globe-viz", {
-        scale: 0.8,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
-    }, "-=0.4");
+        .from(".globe-viz", {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out"
+        }, "-=0.4");
 
     // WebGL Globe interaction logic
     const globeViz = document.getElementById('globe-viz');
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     d.el.style.pointerEvents = 'auto'; // allow hover
                 }
                 return d.el;
-            }); 
+            });
 
         // Override controls for auto-rotation and disable zoom
         world.controls().autoRotate = true;
@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         function runTerminalSequence() {
             termBody.innerHTML = '';
-            
+
             // 1. Initial Prompt
             const line1 = document.createElement('div');
             line1.className = 'term-line';
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             const typedCmd = line1.querySelector('.typed-cmd');
             const caret1 = line1.querySelector('.id-caret-1');
             const cmdText = "whoami";
-            
+
             // Type command
             let i = 0;
             const typeInterval = setInterval(() => {
@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 if (i >= cmdText.length) {
                     clearInterval(typeInterval);
                     caret1.style.display = 'none';
-                    
+
                     // 2. Execute command
                     setTimeout(() => {
                         const line2 = document.createElement('div');
@@ -345,16 +345,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         line2.style.color = '#fff';
                         line2.innerHTML = `Estudante de Engenharia Informática em Lisboa que nas horas vagas presta serviços na área da Tecnologia da Informação e Desenvolvimento Web para pequenas e médias empresas com um valor acessível.`;
                         termBody.appendChild(line2);
-                        
+
                         // 3. Ask to continue
                         setTimeout(() => {
                             const line3 = document.createElement('div');
                             line3.className = 'term-line';
                             line3.innerHTML = `<span class="term-prompt">Softwizz@portfolio:~$</span> Do you want to continue [Y/N] <span class="term-caret id-caret-2"></span>`;
                             termBody.appendChild(line3);
-                            
+
                             const caret2 = line3.querySelector('.id-caret-2');
-                            
+
                             // 4. Wait for Y
                             const handleKey = (e) => {
                                 const k = e.key.toLowerCase();
@@ -362,7 +362,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                                     window.removeEventListener('keydown', handleKey);
                                     caret2.insertAdjacentText('beforebegin', e.key.toUpperCase());
                                     caret2.style.display = 'none';
-                                    
+
                                     if (k === 'y') {
                                         // 5. Start Download
                                         setTimeout(startDownload, 500);
@@ -372,14 +372,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
                                 }
                             };
                             window.addEventListener('keydown', handleKey);
-                            
+
                         }, 1200);
-                        
+
                     }, 600);
                 }
             }, 120);
         }
-        
+
         function promptGame() {
             const line = document.createElement('div');
             line.className = 'term-line';
@@ -387,36 +387,36 @@ document.addEventListener("DOMContentLoaded", (event) => {
             line.style.color = '#ffbd2e';
             line.innerHTML = `<br>--- SYSTEM OVERRIDE ---<br>Type [SPACE] to play a game...`;
             termBody.appendChild(line);
-            
+
             setTimeout(initAlienGame, 500);
         }
-        
+
         function startDownload() {
             const line4 = document.createElement('div');
             line4.className = 'term-progress';
             termBody.appendChild(line4);
-            
+
             let progress = 0;
             const totalBars = 30;
-            
+
             const dlInterval = setInterval(() => {
                 progress += Math.random() * 5 + 2; // approx 4.5% increments
                 if (progress >= 100) progress = 100;
-                
+
                 const filled = Math.floor((progress / 100) * totalBars);
                 const empty = totalBars - filled;
-                
+
                 const barStr = `<span style="color: var(--green-light)">${'█'.repeat(filled)}</span><span style="color: #444">${'█'.repeat(empty)}</span>`;
                 line4.innerHTML = `[${barStr}] ${progress.toFixed(1)}% Gerando acesso ao meu repositório no GitHub ;)`;
-                
+
                 if (progress === 100) {
                     clearInterval(dlInterval);
                     setTimeout(() => {
-                        line4.innerHTML += `<br><br><span style="color:#fff">Acesso Concedido. Abrindo link do repositório...</span><br><br><a href="https://github.com" target="_blank" style="color: var(--green-light); text-decoration: underline;">https://github.com/Softwizz</a>`;
+                        line4.innerHTML += `<br><br><span style="color:#fff">Acesso Concedido. Abrindo link do repositório...</span><br><br><a href="https://github.com/lbaietti" target="_blank" style="color: var(--green-light); text-decoration: underline;">https://github.com/lbaietti</a>`;
                         setTimeout(promptGame, 1000);
                     }, 500);
                 }
-            }, 250); 
+            }, 250);
         }
 
         function initAlienGame() {
@@ -432,20 +432,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
             canvas.style.border = '1px dashed #15c36b';
             canvas.style.backgroundColor = 'rgba(0,0,0,0.5)';
             termBody.appendChild(canvas);
-            
+
             const ctx = canvas.getContext('2d');
-            
+
             let isPlaying = false;
             let isGameOver = false;
             let score = 0;
             let isLightModeTriggered = false;
             let isDarkModeRestored = false;
-            
+
             let alien = { x: 50, y: 110, size: 24, dy: 0, jumpPower: -10, gravity: 0.6, isGrounded: true };
             let obstacles = [];
             let frameCount = 0;
             let speedMod = 1;
-            
+
             function resetGame() {
                 alien.y = 110;
                 alien.dy = 0;
@@ -455,27 +455,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 frameCount = 0;
                 speedMod = 1;
                 isGameOver = false;
-                
+
                 if (isLightModeTriggered && !isDarkModeRestored) {
                     changeToDarkMode();
                 }
                 isLightModeTriggered = false;
                 isDarkModeRestored = false;
             }
-            
+
             function jump() {
                 if (alien.isGrounded) {
                     alien.dy = alien.jumpPower;
                     alien.isGrounded = false;
                 }
             }
-            
+
             window.addEventListener('keydown', (e) => {
                 if (e.code === 'Space') {
                     // Start only if terminal is somewhat in view
                     const rect = canvas.getBoundingClientRect();
                     if (rect.top >= 0 && rect.bottom <= window.innerHeight + 200) {
-                        e.preventDefault(); 
+                        e.preventDefault();
                         if (!isPlaying) {
                             isPlaying = true;
                             resetGame();
@@ -502,21 +502,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 gsap.to(".navbar .logo, .menu-horizontal li a", { clearProps: "all", duration: 1.5 });
                 gsap.to(".bottom-title, .map-section h2, .services-slider h2, .slider-container h3", { clearProps: "all", duration: 1.5 });
             }
-            
+
             function update() {
                 alien.y += alien.dy;
                 alien.dy += alien.gravity;
                 if (alien.y >= 110) { alien.y = 110; alien.dy = 0; alien.isGrounded = true; }
-                
+
                 if (frameCount % 300 === 0 && frameCount > 0) speedMod += 0.15;
-                
+
                 if (frameCount % Math.max(30, Math.floor(90 / speedMod)) === 0 && Math.random() > 0.4) {
                     obstacles.push({ x: canvas.width, y: 118, width: 20, height: 20 });
                 }
-                
+
                 obstacles.forEach(obs => obs.x -= (6 * speedMod));
                 obstacles = obstacles.filter(obs => obs.x > -50);
-                
+
                 obstacles.forEach(obs => {
                     // Collision
                     if (alien.x < obs.x + obs.width && alien.x + alien.size > obs.x &&
@@ -524,7 +524,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         isGameOver = true;
                     }
                 });
-                
+
                 if (frameCount % 6 === 0) {
                     score++; // Progress score slowly like Chrome Dino
                 }
@@ -533,69 +533,69 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     isLightModeTriggered = true;
                     changeToLightMode();
                 }
-                
+
                 // Win Condition
                 if (score >= 1000 && !isDarkModeRestored) {
                     isDarkModeRestored = true;
                     changeToDarkMode();
-                    isGameOver = true; 
+                    isGameOver = true;
                 }
-                
+
                 frameCount++;
             }
-            
+
             function gameLoop() {
                 if (isGameOver) {
                     if (score >= 1000) {
                         ctx.fillStyle = '#ffbd2e';
                         ctx.font = '20px Courier New';
-                        ctx.fillText('🏆 YOU BEAT THE SYSTEM 🏆', canvas.width/2 - 140, 60);
+                        ctx.fillText('🏆 YOU BEAT THE SYSTEM 🏆', canvas.width / 2 - 140, 60);
                         ctx.fillStyle = '#15c36b';
                         ctx.font = '16px Courier New';
-                        ctx.fillText('Mainframe Dark Mode Restored.', canvas.width/2 - 145, 90);
+                        ctx.fillText('Mainframe Dark Mode Restored.', canvas.width / 2 - 145, 90);
                     } else {
                         ctx.fillStyle = '#ff5f56';
                         ctx.font = '20px Courier New';
-                        ctx.fillText('GAME OVER - Press Space to Retry', canvas.width/2 - 170, 80);
+                        ctx.fillText('GAME OVER - Press Space to Retry', canvas.width / 2 - 170, 80);
                     }
                     return; // Stop requesting animation frame
                 }
-                
+
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
+
                 // Ground
                 ctx.beginPath();
                 ctx.moveTo(0, 120);
                 ctx.lineTo(canvas.width, 120);
                 ctx.strokeStyle = '#15c36b';
                 ctx.stroke();
-                
+
                 update();
-                
+
                 // Draw entities
                 ctx.font = '30px Arial';
                 ctx.fillText('👽', alien.x, alien.y);
                 ctx.font = '25px Arial';
                 obstacles.forEach(obs => ctx.fillText('🛸', obs.x, obs.y));
-                
+
                 // Score
                 ctx.fillStyle = '#15c36b';
                 ctx.font = '16px Courier New';
                 const scoreText = `Score: ${score.toString().padStart(4, '0')} / 1000`;
                 ctx.fillText(scoreText, canvas.width - 200, 30);
-                
+
                 if (score >= 500 && score < 1000) {
                     ctx.fillStyle = '#ffbd2e';
-                    ctx.fillText(`🌟 LIGHT MODE ENGAGED 🌟`, canvas.width/2 - 130, 40);
+                    ctx.fillText(`🌟 LIGHT MODE ENGAGED 🌟`, canvas.width / 2 - 130, 40);
                 }
-                
+
                 requestAnimationFrame(gameLoop);
             }
-            
+
             // Initial render
             ctx.fillStyle = '#15c36b';
             ctx.font = '20px Courier New';
-            ctx.fillText('Press SPACE to start', canvas.width/2 - 120, 80);
+            ctx.fillText('Press SPACE to start', canvas.width / 2 - 120, 80);
         }
     }
 

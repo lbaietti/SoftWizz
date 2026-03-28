@@ -104,7 +104,7 @@ html {
     left: 0;
     width: 100%;
     height: 400px;
-    background: linear-gradient(to bottom, transparent 0%, rgba(15,15,15,0.8) 60%, rgba(15,15,15,1) 100%) !important;
+    background: linear-gradient(to bottom, transparent 0%, rgba(15, 15, 15, 0.8) 60%, rgba(15, 15, 15, 1) 100%) !important;
     z-index: 5;
     pointer-events: none;
 }
@@ -291,12 +291,13 @@ html {
     position: fixed;
     top: 0;
     left: 0;
-    width: 8px; /* Slightly larger base */
-    height: 8px;
-    background: rgba(255, 255, 255, 0.4);
+    width: 10px;
+    /* Slightly larger base */
+    height: 10px;
+    background: rgba(255, 255, 255, 0.784);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(112, 112, 112, 0.5);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
@@ -311,11 +312,30 @@ html {
 }
 
 @keyframes rainbowToRed {
-    0% { background-color: rgba(238, 130, 238, 0.5); border-color: violet; }
-    25% { background-color: rgba(0, 0, 255, 0.5); border-color: blue; }
-    50% { background-color: rgba(0, 128, 0, 0.5); border-color: green; }
-    75% { background-color: rgba(255, 165, 0, 0.5); border-color: orange; }
-    100% { background-color: rgba(255, 0, 0, 0.8); border-color: red; }
+    0% {
+        background-color: rgba(238, 130, 238, 0.5);
+        border-color: violet;
+    }
+
+    25% {
+        background-color: rgba(0, 0, 255, 0.5);
+        border-color: blue;
+    }
+
+    50% {
+        background-color: rgba(0, 128, 0, 0.5);
+        border-color: green;
+    }
+
+    75% {
+        background-color: rgba(255, 165, 0, 0.5);
+        border-color: orange;
+    }
+
+    100% {
+        background-color: rgba(255, 0, 0, 0.8);
+        border-color: red;
+    }
 }
 
 .cursor-follower.vibrating {
@@ -323,11 +343,30 @@ html {
 }
 
 @keyframes cursorShake {
-    0% { margin-left: -2px; margin-top: -3px; }
-    25% { margin-left: 2px; margin-top: 3px; }
-    50% { margin-left: -3px; margin-top: 2px; }
-    75% { margin-left: 3px; margin-top: -2px; }
-    100% { margin-left: -2px; margin-top: 2px; }
+    0% {
+        margin-left: -2px;
+        margin-top: -3px;
+    }
+
+    25% {
+        margin-left: 2px;
+        margin-top: 3px;
+    }
+
+    50% {
+        margin-left: -3px;
+        margin-top: 2px;
+    }
+
+    75% {
+        margin-left: 3px;
+        margin-top: -2px;
+    }
+
+    100% {
+        margin-left: -2px;
+        margin-top: 2px;
+    }
 }
 
 .cursor-follower.cracked::before {
@@ -358,9 +397,11 @@ html {
 
 .cursor-particle {
     position: fixed;
-    width: 3px; /* Tiny particles */
+    width: 3px;
+    /* Tiny particles */
     height: 3px;
-    background-color: var(--green-light); /* Green particles */
+    background-color: var(--green-light);
+    /* Green particles */
     border-radius: 50%;
     pointer-events: none;
     z-index: 9998;
@@ -390,25 +431,30 @@ html {
 /* --- SECTION 2: Interactive Map --- */
 .map-section {
     background-color: #0f0f0f;
-    background-image: radial-gradient(circle at center, #020513 0%, #0f0f0f 70%); /* Fades seamlessly into adjacent sections */
+    background-image: radial-gradient(circle at center, #020513 0%, #0f0f0f 70%);
+    /* Fades seamlessly into adjacent sections */
     padding: 100px 20px;
     position: relative;
     z-index: 10;
-    overflow: hidden; /* Keeps shooting stars bounded */
+    overflow: hidden;
+    /* Keeps shooting stars bounded */
 }
 
 /* Twinkling Star Layer */
 .map-section::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
         radial-gradient(1px 1px at 20px 30px, #ffffff, transparent),
-        radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(1px 1px at 50px 160px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1px 1px at 50px 160px, rgba(255, 255, 255, 0.5), transparent),
         radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, transparent),
-        radial-gradient(1.5px 1.5px at 130px 80px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.6), transparent);
+        radial-gradient(1.5px 1.5px at 130px 80px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(255, 255, 255, 0.6), transparent);
     background-repeat: repeat;
     background-size: 200px 200px;
     opacity: 0.5;
@@ -418,8 +464,13 @@ html {
 }
 
 @keyframes twinkle {
-    0% { opacity: 0.3; }
-    100% { opacity: 0.9; }
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.9;
+    }
 }
 
 /* Shooting Stars */
@@ -427,7 +478,7 @@ html {
     position: absolute;
     width: 150px;
     height: 1px;
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(21, 195, 107, 0.8) 100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(21, 195, 107, 0.8) 100%);
     transform: rotate(var(--angle, -45deg));
     opacity: 0;
     pointer-events: none;
@@ -452,13 +503,17 @@ html {
         transform: rotate(var(--angle, -45deg)) translateX(-100px);
         opacity: 0;
     }
+
     10% {
         opacity: 1;
     }
+
     20% {
-        transform: rotate(var(--angle, -45deg)) translateX(900px); /* Shoot across a good distance */
+        transform: rotate(var(--angle, -45deg)) translateX(900px);
+        /* Shoot across a good distance */
         opacity: 0;
     }
+
     100% {
         transform: rotate(var(--angle, -45deg)) translateX(900px);
         opacity: 0;
@@ -473,7 +528,8 @@ html {
     text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center; /* This explicitly centralizes the map-wrapper and map-title together */
+    align-items: center;
+    /* This explicitly centralizes the map-wrapper and map-title together */
 }
 
 .map-title {
@@ -486,7 +542,8 @@ html {
 .map-wrapper {
     position: relative;
     width: 100%;
-    max-width: 600px; /* slightly larger for WebGL */
+    max-width: 600px;
+    /* slightly larger for WebGL */
     height: 600px;
     margin: 0 auto;
     display: flex;
@@ -544,8 +601,15 @@ html {
 }
 
 @keyframes mapPulse {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(3); opacity: 0; }
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
 }
 
 .project-card {
@@ -554,7 +618,7 @@ html {
     top: -50%;
     /* No translateY because it conflicts with 3D space transforms simply */
     background: rgba(15, 15, 15, 0.9);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 12px;
@@ -562,8 +626,9 @@ html {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    pointer-events: none; /* Let parent handle hover */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    /* Let parent handle hover */
 }
 
 .map-point:hover .project-card {
@@ -625,18 +690,18 @@ html {
     background: rgba(10, 10, 10, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(21, 195, 107, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(21, 195, 107, 0.1);
     overflow: hidden;
     font-family: 'Courier New', Courier, monospace;
     text-align: left;
 }
 
 .terminal-header {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 10px 15px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .term-btns {
@@ -651,9 +716,17 @@ html {
     border-radius: 50%;
 }
 
-.term-close { background: #ff5f56; }
-.term-min { background: #ffbd2e; }
-.term-max { background: #27c93f; }
+.term-close {
+    background: #ff5f56;
+}
+
+.term-min {
+    background: #ffbd2e;
+}
+
+.term-max {
+    background: #27c93f;
+}
 
 .term-title {
     color: #888;
@@ -663,7 +736,8 @@ html {
 
 .terminal-body {
     padding: 30px;
-    color: var(--green-light); /* Matrix style output */
+    color: var(--green-light);
+    /* Matrix style output */
     font-size: 1.1rem;
     line-height: 1.6;
     min-height: 350px;
@@ -691,8 +765,15 @@ html {
 }
 
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
 
 .term-progress {
@@ -741,9 +822,72 @@ html {
     font-weight: 500;
 }
 
+/* --- SECTION: Contact Form --- */
+.contact-section {
+    padding: 10vh 20px 15vh 20px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.contact-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.contact-container p {
+    color: #888;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--green-light);
+    background: rgba(21, 195, 107, 0.05);
+    box-shadow: 0 0 15px rgba(21, 195, 107, 0.2);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #666;
+}
+
 /* Footer Section */
 .site-footer {
-    background-color: #0f0f0f; /* Always dark */
+    background-color: #0f0f0f;
+    /* Always dark */
     color: #ffffff;
     padding: 60px 20px 20px 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
