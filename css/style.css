@@ -231,18 +231,43 @@ html {
     transform: translateY(-2px);
 }
 
-.btn-whatsapp {
+/* Floating WhatsApp */
+.floating-wa {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
     background-color: #25D366;
-    color: #fff;
-    border: 1px solid #25D366;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    animation: ringInterval 5s infinite;
 }
 
-.btn-whatsapp:hover {
+.floating-wa svg {
+    width: 38px;
+    height: 38px;
+}
+
+.floating-wa:hover {
     background-color: #1ebe5d;
-    border-color: #1ebe5d;
-    transform: translateY(-2px);
-    color: #fff;
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+    transform: scale(1.05);
+}
+
+@keyframes ringInterval {
+    0%, 80% { transform: scale(1) rotate(0deg); }
+    82% { transform: scale(1.1) rotate(15deg); }
+    84% { transform: scale(1.1) rotate(-15deg); }
+    86% { transform: scale(1.1) rotate(15deg); }
+    88% { transform: scale(1.1) rotate(-15deg); }
+    90% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1) rotate(0deg); }
 }
 
 /* Decorative Badge */

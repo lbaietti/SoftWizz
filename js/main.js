@@ -25,6 +25,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
             lenis.raf(time * 1000);
         });
         gsap.ticker.lagSmoothing(0);
+
+        // --- Smooth Anchor Internal Navigation using Lenis ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    lenis.scrollTo(target, { duration: 1.5, offset: -30 });
+                }
+            });
+        });
     }
 
     // --- 2. Custom Cursor Follower ---
