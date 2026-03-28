@@ -827,18 +827,19 @@ html {
     overflow: hidden;
     padding: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
 }
 
 .slider-container {
     display: flex;
     width: 400vw;
-    height: 100vh;
+    height: 100dvh;
+    transform-origin: center center; /* Pra o scale funcionar bem no eixo X e Y */
 }
 
 .slide {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     padding: 0;
     box-sizing: border-box;
     display: flex;

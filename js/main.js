@@ -613,7 +613,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const slides = gsap.utils.toArray(".slide");
 
     // Zoom-in effect when section enters viewport
-    gsap.fromTo(".services-slider", 
+    // Mudamos o alvo de .services-slider para .slider-container para evitar bugar o cálculo de "pin" (Pinning)
+    gsap.fromTo(".slider-container", 
         { scale: 0.75, borderRadius: "60px", opacity: 0 }, 
         {
             scale: 1, 
@@ -665,33 +666,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
             }
 
             if (text) {
+                // Força o estado transparente e deslocado inicial imediatamente antes de calcular as âncoras de rolagem.
+                gsap.set(text, { opacity: 0, y: i === 0 ? 50 : 0, x: i === 0 ? 0 : 80 });
+
                 if (i === 0) {
-                    // O primeiro slide aparece de baixo para cima ao chegar na seção do site
-                    gsap.fromTo(text,
-                        { opacity: 0, y: 50 },
-                        {
-                            opacity: 1, y: 0, duration: 1.2, ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: ".services-slider",
-                                start: "top 60%",
-                                toggleActions: "play none none reverse"
-                            }
+                    // O primeiro slide tem Fade-In atrelado mecanicamente (Scrub) à entrada da seção de 70% a 30% da tela
+                    gsap.to(text, {
+                        opacity: 1, y: 0, ease: "none",
+                        scrollTrigger: {
+                            trigger: ".services-slider",
+                            start: "top 70%",
+                            end: "top 25%",
+                            scrub: true
                         }
-                    );
+                    });
                 } else {
-                    // Os demais slides aparecem sutilmente da direita para o centro copiando a inércia do slider
-                    gsap.fromTo(text,
-                        { opacity: 0, x: 100 },
-                        {
-                            opacity: 1, x: 0, duration: 1.2, ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: slide,
-                                containerAnimation: horizontalTween,
-                                start: "left 75%",
-                                toggleActions: "play none none reverse"
-                            }
+                    // Os demais ganham Fade-In atrelado mecanicamente (Scrub) à rolagem horizontal
+                    gsap.to(text, {
+                        opacity: 1, x: 0, ease: "none",
+                        scrollTrigger: {
+                            trigger: slide,
+                            containerAnimation: horizontalTween,
+                            start: "left 85%",
+                            end: "left 35%",
+                            scrub: true
                         }
-                    );
+                    });
                 }
             }
         });
