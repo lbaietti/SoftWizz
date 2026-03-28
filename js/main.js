@@ -613,15 +613,36 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const slides = gsap.utils.toArray(".slide");
 
     if (sliderContainer && slides.length > 0) {
-        gsap.to(slides, {
+        let horizontalTween = gsap.to(slides, {
             xPercent: -100 * (slides.length - 1),
             ease: "none",
             scrollTrigger: {
                 trigger: ".services-slider",
                 pin: true,
-                scrub: 1, // Smooth scrub
+                scrub: 1, 
                 snap: 1 / (slides.length - 1),
                 end: () => "+=" + sliderContainer.offsetWidth
+            }
+        });
+
+        // Background Zoom Animation for Full Slides
+        slides.forEach(slide => {
+            let bg = slide.querySelector(".slide-bg");
+            if (bg) {
+                gsap.fromTo(bg, 
+                    { scale: 1 },
+                    {
+                        scale: 1.25,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: slide,
+                            containerAnimation: horizontalTween,
+                            start: "left center",
+                            end: "right center",
+                            scrub: true
+                        }
+                    }
+                );
             }
         });
     }

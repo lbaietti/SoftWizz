@@ -80,12 +80,6 @@
                         <h2>Parcerias e Projectos</h2>
                         <p class="card-desc">Sistemas Back End personalizados e APIs</p>
 
-                        <ul class="feature-list">
-                            <li>Automações</li>
-                            <li>Integração com a Nuvem</li>
-                            <li>Planeamento de Sistemas e Arquitetura UML</li>
-                        </ul>
-
                         <div class="card-action" style="display: flex; justify-content: center;">
                             <a href="#contact" class="btn btn-secondary">Entre em Contacto</a>
                         </div>
@@ -175,20 +169,31 @@
     <section class="services-slider" id="services-slider">
         <div class="slider-container">
             <div class="slide">
-                <img src="assets/fotis-fotopoulos-DuHKoV44prg-unsplash.jpg" alt="Web Development">
-                <h3>Desenvolvimento Web</h3>
+                <div class="slide-bg"
+                    style="background-image: url('assets/fotis-fotopoulos-DuHKoV44prg-unsplash.jpg');"></div>
+                <div class="slide-content">
+                    <h3>Desenvolvimento Web</h3>
+                </div>
             </div>
             <div class="slide">
-                <img src="assets/jakub-zerdzicki-n3ba57RKVNs-unsplash.jpg" alt="Cloud Integration">
-                <h3>Automatizações</h3>
+                <div class="slide-bg" style="background-image: url('assets/jakub-zerdzicki-n3ba57RKVNs-unsplash.jpg');">
+                </div>
+                <div class="slide-content">
+                    <h3>Automatizações</h3>
+                </div>
             </div>
             <div class="slide">
-                <img src="assets/azamat-e-eb1cgnNIazI-unsplash.jpg" alt="Data Analytics">
-                <h3>Desenvolvimento Mobile</h3>
+                <div class="slide-bg" style="background-image: url('assets/azamat-e-eb1cgnNIazI-unsplash.jpg');"></div>
+                <div class="slide-content">
+                    <h3>Desenvolvimento Mobile</h3>
+                </div>
             </div>
             <div class="slide">
-                <img src="assets/igor-omilaev-eGGFZ5X2LnA-unsplash.jpg" alt="Artificial Intelligence">
-                <h3>Implementação Lógica</h3>
+                <div class="slide-bg" style="background-image: url('assets/igor-omilaev-eGGFZ5X2LnA-unsplash.jpg');">
+                </div>
+                <div class="slide-content">
+                    <h3>Implementação Lógica</h3>
+                </div>
             </div>
         </div>
     </section>
@@ -245,9 +250,12 @@
     </footer>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/351999999999?text=Ol%C3%A1!%20Gostaria%20de%20falar%20sobre%20um%20projeto." target="_blank" class="floating-wa" aria-label="WhatsApp">
+    <a href="https://wa.me/351999999999?text=Ol%C3%A1!%20Gostaria%20de%20falar%20sobre%20um%20projeto." target="_blank"
+        class="floating-wa" aria-label="WhatsApp">
         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 2.5C8.5 2.5 2.5 8.5 2.5 16C2.5 18.9 3.4 21.6 5 23.9L3.1 30.6L10 28.8C11.8 29.8 13.9 30.3 16 30.3C23.5 30.3 29.5 24.3 29.5 16.8C29.5 9.3 23.5 3.3 16 3.3V2.5ZM16 4.8C22.2 4.8 27.2 9.8 27.2 16C27.2 22.2 22.2 27.2 16 27.2C14 27.2 12.1 26.7 10.5 25.8L9.9 25.4L6.1 26.4L7.1 22.7L6.7 22C5.6 20.3 4.9 18.2 4.9 16C4.9 9.8 9.9 4.8 16 4.8ZM11.1 9.9C10.8 9.9 10.4 10.1 10.1 10.4C9.8 10.7 8.9 11.5 8.9 13.1C8.9 14.8 10.2 16.4 10.4 16.6C10.5 16.8 12.8 20.4 16.3 21.9C17.1 22.2 17.8 22.4 18.3 22.6C19.1 22.8 19.8 22.8 20.3 22.7C20.9 22.6 22.3 21.8 22.6 21C22.9 20.2 22.9 19.4 22.8 19.3C22.7 19.1 22.4 19 22.1 18.9C21.7 18.7 20 17.9 19.6 17.7C19.3 17.6 19.1 17.5 18.9 17.8C18.6 18.2 17.9 19 17.7 19.3C17.4 19.5 17.2 19.5 16.8 19.4C16.5 19.2 15.3 18.8 13.9 17.6C12.8 16.6 12.1 15.3 11.9 15C11.6 14.6 11.8 14.5 12 14.3C12.2 14.1 12.4 13.9 12.6 13.6C12.7 13.4 12.8 13.2 13 12.9C13.1 12.6 13 12.4 12.9 12.2C12.8 12 12.1 10.3 11.8 9.6C11.6 9 11.3 9.1 11.1 9.1C11.1 9.1 11.1 9 11.1 9.9Z" fill="currentColor"/>
+            <path
+                d="M16 2.5C8.5 2.5 2.5 8.5 2.5 16C2.5 18.9 3.4 21.6 5 23.9L3.1 30.6L10 28.8C11.8 29.8 13.9 30.3 16 30.3C23.5 30.3 29.5 24.3 29.5 16.8C29.5 9.3 23.5 3.3 16 3.3V2.5ZM16 4.8C22.2 4.8 27.2 9.8 27.2 16C27.2 22.2 22.2 27.2 16 27.2C14 27.2 12.1 26.7 10.5 25.8L9.9 25.4L6.1 26.4L7.1 22.7L6.7 22C5.6 20.3 4.9 18.2 4.9 16C4.9 9.8 9.9 4.8 16 4.8ZM11.1 9.9C10.8 9.9 10.4 10.1 10.1 10.4C9.8 10.7 8.9 11.5 8.9 13.1C8.9 14.8 10.2 16.4 10.4 16.6C10.5 16.8 12.8 20.4 16.3 21.9C17.1 22.2 17.8 22.4 18.3 22.6C19.1 22.8 19.8 22.8 20.3 22.7C20.9 22.6 22.3 21.8 22.6 21C22.9 20.2 22.9 19.4 22.8 19.3C22.7 19.1 22.4 19 22.1 18.9C21.7 18.7 20 17.9 19.6 17.7C19.3 17.6 19.1 17.5 18.9 17.8C18.6 18.2 17.9 19 17.7 19.3C17.4 19.5 17.2 19.5 16.8 19.4C16.5 19.2 15.3 18.8 13.9 17.6C12.8 16.6 12.1 15.3 11.9 15C11.6 14.6 11.8 14.5 12 14.3C12.2 14.1 12.4 13.9 12.6 13.6C12.7 13.4 12.8 13.2 13 12.9C13.1 12.6 13 12.4 12.9 12.2C12.8 12 12.1 10.3 11.8 9.6C11.6 9 11.3 9.1 11.1 9.1C11.1 9.1 11.1 9 11.1 9.9Z"
+                fill="currentColor" />
         </svg>
     </a>
 
