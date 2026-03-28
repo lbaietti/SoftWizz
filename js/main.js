@@ -608,9 +608,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     }
 
-    // --- 5. Horizontal Slider Animation ---
+    // --- 5. Horizontal Slider Animation & Zoom Entrance ---
     const sliderContainer = document.querySelector(".slider-container");
     const slides = gsap.utils.toArray(".slide");
+
+    // Zoom-in effect when section enters viewport
+    gsap.fromTo(".services-slider", 
+        { scale: 0.75, borderRadius: "60px", opacity: 0 }, 
+        {
+            scale: 1, 
+            borderRadius: "0px", 
+            opacity: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".services-slider",
+                start: "top bottom",
+                end: "top top",
+                scrub: 1
+            }
+        }
+    );
 
     if (sliderContainer && slides.length > 0) {
         let horizontalTween = gsap.to(slides, {
