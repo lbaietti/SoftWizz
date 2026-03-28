@@ -642,9 +642,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
             }
         });
 
-        // Background Zoom Animation for Full Slides
-        slides.forEach(slide => {
+        // Background Zoom Animation and Typography Fade-In for Full Slides
+        slides.forEach((slide, i) => {
             let bg = slide.querySelector(".slide-bg");
+            let text = slide.querySelector(".slide-content h3");
+
             if (bg) {
                 gsap.fromTo(bg, 
                     { scale: 1 },
@@ -660,6 +662,37 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         }
                     }
                 );
+            }
+
+            if (text) {
+                if (i === 0) {
+                    // O primeiro slide aparece de baixo para cima ao chegar na seção do site
+                    gsap.fromTo(text,
+                        { opacity: 0, y: 50 },
+                        {
+                            opacity: 1, y: 0, duration: 1.2, ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: ".services-slider",
+                                start: "top 60%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                } else {
+                    // Os demais slides aparecem sutilmente da direita para o centro copiando a inércia do slider
+                    gsap.fromTo(text,
+                        { opacity: 0, x: 100 },
+                        {
+                            opacity: 1, x: 0, duration: 1.2, ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: slide,
+                                containerAnimation: horizontalTween,
+                                start: "left 75%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                }
             }
         });
     }
