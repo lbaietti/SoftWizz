@@ -1018,3 +1018,34 @@ html {
     color: #6b7280;
     font-size: 0.85rem;
 }
+
+/* --- Mobile Responsive Adjustments --- */
+@media (max-width: 768px) {
+    /* Mapeamento 3D: Reduz a caixa e altura para criar margem nas bordas */
+    .map-wrapper {
+        width: 90vw;
+        max-width: 90vw;
+        height: 90vw;
+        max-height: 90vw;
+        margin: 0 auto;
+    }
+    .map-title {
+        font-size: 1.8rem;
+    }
+
+    /* Tipografia Header/Landing */
+    .main-title {
+        font-size: 3rem;
+    }
+    
+    /* Tipografia do Zoom-In Slider */
+    .slide-content h3 {
+        font-size: 2.2rem;
+        padding: 0 15px;
+    }
+    
+    /* Contact Form margin shrinking */
+    .contact-container {
+        padding: 40px 20px;
+    }
+}

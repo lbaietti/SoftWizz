@@ -699,7 +699,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // --- 6. Interactive Cmatrix Effect ---
     const matrixCanvas = document.getElementById('matrix-canvas');
-    if (matrixCanvas && window.matchMedia("(pointer: fine)").matches) {
+    if (matrixCanvas) {
         const ctx = matrixCanvas.getContext('2d');
         let width, height, cols, rows;
         const matrixFontSize = 16;
