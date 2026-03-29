@@ -224,6 +224,7 @@ html {
     background-color: rgba(255, 255, 255, 0.08);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 9rem;
 }
 
 .btn-secondary:hover {
@@ -261,13 +262,35 @@ html {
 }
 
 @keyframes ringInterval {
-    0%, 80% { transform: scale(1) rotate(0deg); }
-    82% { transform: scale(1.1) rotate(15deg); }
-    84% { transform: scale(1.1) rotate(-15deg); }
-    86% { transform: scale(1.1) rotate(15deg); }
-    88% { transform: scale(1.1) rotate(-15deg); }
-    90% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1) rotate(0deg); }
+
+    0%,
+    80% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    82% {
+        transform: scale(1.1) rotate(15deg);
+    }
+
+    84% {
+        transform: scale(1.1) rotate(-15deg);
+    }
+
+    86% {
+        transform: scale(1.1) rotate(15deg);
+    }
+
+    88% {
+        transform: scale(1.1) rotate(-15deg);
+    }
+
+    90% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
 }
 
 /* Decorative Badge */
@@ -834,7 +857,8 @@ html {
     display: flex;
     width: 400vw;
     height: 100dvh;
-    transform-origin: center center; /* Pra o scale funcionar bem no eixo X e Y */
+    transform-origin: center center;
+    /* Pra o scale funcionar bem no eixo X e Y */
 }
 
 .slide {
@@ -867,7 +891,7 @@ html {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.55);
+    background: rgba(0, 0, 0, 0.55);
 }
 
 .slide-content {
@@ -882,7 +906,7 @@ html {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
     color: #fff;
 }
 
@@ -1039,6 +1063,7 @@ html {
         max-height: 90vw;
         margin: 0 auto;
     }
+
     .map-title {
         font-size: 1.8rem;
     }
@@ -1047,13 +1072,13 @@ html {
     .main-title {
         font-size: 3rem;
     }
-    
+
     /* Tipografia do Zoom-In Slider */
     .slide-content h3 {
         font-size: 2.2rem;
         padding: 0 15px;
     }
-    
+
     /* Contact Form margin shrinking */
     .contact-container {
         padding: 40px 20px;
