@@ -276,11 +276,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             if (loc.el) loc.el.style.display = 'block'; // Make visible when appended by Globe.gl
         });
 
-        // Initialize Globe fixed sizes for mobile safety
-        let currentW = window.innerWidth > 768 ? 600 : window.innerWidth * 0.9;
+        // Initialize Globe
         const world = Globe()(globeViz)
-            .width(currentW)
-            .height(currentW)
             .backgroundColor('rgba(0,0,0,0)')
             .showGlobe(false)
             .showAtmosphere(true)
@@ -303,12 +300,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         world.controls().autoRotate = true;
         world.controls().autoRotateSpeed = 0.5;
         world.controls().enableZoom = false;
-
-        // Auto-Resize the globe canvas strictly
-        window.addEventListener('resize', () => {
-            currentW = window.innerWidth > 768 ? 600 : window.innerWidth * 0.9;
-            world.width(currentW).height(currentW);
-        });
 
         // Fetch data and populate
         fetch('https://unpkg.com/world-atlas@2.0.2/countries-110m.json')
@@ -531,6 +522,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                             gameLoop();
                         } else if (isGameOver) {
                             resetGame();
+                            gameLoop();
                         } else {
                             jump();
                         }
@@ -764,7 +756,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
 
         resizeMatrix();
-        window.addEventListener('resize', resizeMatrix);
+        let lastWidth = window.innerWidth;
+        window.addEventListener('resize', () => {
+            if (window.innerWidth !== lastWidth) {
+                lastWidth = window.innerWidth;
+                resizeMatrix();
+            }
+        });
 
         let mouseX = -1000, mouseY = -1000;
         window.addEventListener('mousemove', e => {
