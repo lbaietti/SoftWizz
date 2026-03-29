@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sucesso | Softwizz</title>
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        .success-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .success-icon {
+            font-size: 5rem;
+            color: #15c36b;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body style="background-color: #0f0f0f; overflow: hidden; font-family: 'Outfit', sans-serif;">
+    <main class="success-page">
+        <div class="success-icon">✓</div>
+        <h1 class="main-title" style="font-size: 3rem; margin-bottom: 20px;">Mensagem <span style="color: #15c36b;">Enviada</span>!</h1>
+        <p style="color: #9ca3af; max-width: 600px; font-size: 1.2rem; margin-bottom: 40px; line-height: 1.6;">
+            Agradecemos pelo seu contacto. Recebemos os dados do seu projeto com sucesso e um e-mail automático de confirmação está a caminho da sua caixa de entrada.<br><br>
+            Entrarei em contacto consigo o mais breve possível para marcarmos uma abordagem e darmos início à construção da sua ideia!
+        </p>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+            <a href="../index.html" class="btn btn-primary" style="background-color: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">Voltar ao Início</a>
+            <a href="https://wa.me/351960000669?text=Ol%C3%A1!%20Acabei%20de%20enviar%20uma%20mensagem%20pelo%20site." target="_blank" class="btn btn-primary" style="background-color: #25D366; color: #fff;">Chamar no WhatsApp</a>
+        </div>
+    </main>
+
+    <script>
+        gsap.from(".success-icon", { y: -50, opacity: 0, duration: 1, ease: "bounce.out" });
+        gsap.from(".main-title", { y: 20, opacity: 0, duration: 1, delay: 0.3 });
+        gsap.from("p", { y: 20, opacity: 0, duration: 1, delay: 0.5 });
+        gsap.from(".btn", { y: 20, opacity: 0, duration: 1, delay: 0.7, stagger: 0.2 });
+    </script>
+</body>
+
+</html>

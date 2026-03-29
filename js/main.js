@@ -853,10 +853,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .then(async (response) => {
                 let json = await response.json();
                 if (response.status == 200) {
-                    btn.textContent = 'Mensagem Enviada!';
+                    btn.textContent = 'A redirecionar...';
                     btn.style.backgroundColor = '#15c36b';
-                    alert("Mensagem enviada com sucesso! Um e-mail de confirmação será enviado a você. O Console Light-Mode foi ativado.");
                     contactForm.reset();
+                    // Aguarda 2.5s para o usuário assistir ao efeito especial do Light Mode Console
+                    setTimeout(() => {
+                        window.location.href = './orcamento/sucesso.html';
+                    }, 2500);
                 } else {
                     btn.textContent = 'Erro ao enviar.';
                     btn.style.backgroundColor = '#ff5f56';
