@@ -837,9 +837,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault(); 
             
-            // Trigger Easter Egg Light Mode
-            changeToLightMode();
-            
             const btn = this.querySelector('button[type="submit"]');
             btn.textContent = 'Enviando...';
             btn.disabled = true;
@@ -856,18 +853,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     btn.textContent = 'A redirecionar...';
                     btn.style.backgroundColor = '#15c36b';
                     contactForm.reset();
-                    // Aguarda 2.5s para o usuário assistir ao efeito especial do Light Mode Console
+                    // Redireciona de imediato para a página de sucesso
                     setTimeout(() => {
                         window.location.href = './orcamento/sucesso.html';
-                    }, 2500);
+                    }, 500);
                 } else {
-                    btn.textContent = 'Erro ao enviar.';
-                    btn.style.backgroundColor = '#ff5f56';
-                    console.log(response);
+                    // Significa que faltou colocar a Access_Key correta no index.html (ou o servidor da Web3Forms rejeitou)
+                    btn.textContent = 'Chave Web3Forms Inválida.';
+                    btn.style.backgroundColor = '#ffbd2e';
+                    btn.disabled = false;
+                    console.log("Erro da Web3Forms:", json);
                 }
             })
             .catch(error => {
                 btn.textContent = 'Erro de Conexão.';
+                btn.disabled = false;
                 console.log(error);
             });
         });
