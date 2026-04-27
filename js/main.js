@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         });
 
         // Adaptive quality: mobile gets a lighter render (faster load, less GPU pressure)
-        const isMobile = window.innerWidth <= 1080;
+        const isMobile = window.innerWidth <= 680;
         const hexRes = isMobile ? 3 : 4;    // res 3 is ~4× cheaper than res 4
         const topoUrl = isMobile
             ? 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json'
