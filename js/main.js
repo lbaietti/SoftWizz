@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const topoFallUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json';
 
         // Size the globe canvas to fit the actual wrapper element
-        const wrapperSize = Math.min(globeViz.parentElement.offsetWidth, isMobile ? 380 : 600);
+        const wrapperSize = Math.min(globeViz.parentElement.offsetWidth, isMobile ? window.innerWidth - 4 : 600);
 
         const world = Globe()(globeViz)
             .width(wrapperSize)

@@ -1044,10 +1044,10 @@ html {
 
     /* Mapeamento 3D: Centered, never touches screen edges */
     .map-wrapper {
-        width: calc(100vw - 40px);  /* 20px margin each side */
-        max-width: calc(100vw - 40px);
-        height: calc(100vw - 40px); /* square aspect ratio */
-        max-height: 420px;          /* cap on larger phones */
+        width: calc(100vw - 4px);  /* 2px margin each side */
+        max-width: calc(100vw - 4px);
+        height: calc(100vw - 4px); /* square aspect ratio */
+        max-height: 500px;          /* cap on larger phones/small tablets */
         margin: 0 auto;
         overflow: hidden;
     }
