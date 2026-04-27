@@ -280,66 +280,73 @@ document.addEventListener("DOMContentLoaded", (event) => {
             }
         });
 
-        // Initialize Globe
-        // Resolution 4 = ~4× more hexagons than 3, needed for small countries (e.g. Portugal)
-        // countries-50m is higher detail than 110m — essential for Iberian/Western-European accuracy
+        // Adaptive quality: mobile gets a lighter render (faster load, less GPU pressure)
+        const isMobile = window.innerWidth <= 768;
+        const hexRes      = isMobile ? 3 : 4;    // res 3 is ~4× cheaper than res 4
+        const topoUrl     = isMobile
+            ? 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json'
+            : 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json';
+        const topoFallUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json';
+
+        // Size the globe canvas to fit the actual wrapper element
+        const wrapperSize = Math.min(globeViz.parentElement.offsetWidth, isMobile ? 380 : 600);
+
         const world = Globe()(globeViz)
+            .width(wrapperSize)
+            .height(wrapperSize)
             .backgroundColor('rgba(0,0,0,0)')
             .showGlobe(true)
-            .globeImageUrl(null)          // no texture — pure color fill
+            .globeImageUrl(null)
             .showAtmosphere(true)
             .atmosphereColor('#15c36b')
-            .atmosphereAltitude(0.18)
-            // ── Hex polygon land layer ──────────────────────────────────────────
-            .hexPolygonResolution(4)          // key fix: enough hexagons for Portugal
-            .hexPolygonMargin(0.25)           // tighter margin → denser dot grid
-            .hexPolygonAltitude(0.004)        // slight extrusion for depth
-            .hexPolygonColor(() => `rgba(21,195,107,0.85)`)
-            // ── HTML markers ───────────────────────────────────────────────────
-            .htmlElementsData(locations)
+            .atmosphereAltitude(isMobile ? 0.12 : 0.18)
+            // ── Hex polygon land layer ─────────────────────────────────────────
+            .hexPolygonResolution(hexRes)
+            .hexPolygonMargin(isMobile ? 0.3 : 0.25)
+            .hexPolygonAltitude(0)            // skip extrusion — saves GPU fill
+            .hexPolygonColor(() => 'rgba(21,195,107,0.85)')
+            // ── HTML markers ──────────────────────────────────────────────────
+            .htmlElementsData(isMobile ? [] : locations)  // hide markers on mobile (overflow risk)
             .htmlLat(d => d.lat)
             .htmlLng(d => d.lng)
             .htmlAltitude(0.06)
             .htmlElement(d => {
-                if (d.el) {
-                    d.el.style.transform = 'translate(-50%, -50%)';
-                }
+                if (d.el) d.el.style.transform = 'translate(-50%, -50%)';
                 return d.el;
             });
 
-        // Darken the globe sphere using the globeMaterial getter (no separate THREE import needed)
+        // Darken sphere base via material getter (no global THREE needed)
         const globeMat = world.globeMaterial();
         globeMat.color.setHex(0x080f0b);
         globeMat.emissive.setHex(0x000000);
         globeMat.opacity = 0.97;
         globeMat.transparent = true;
 
-        // Controls: auto-rotate, no zoom
+        // Controls
         world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 0.4;
+        world.controls().autoRotateSpeed = isMobile ? 0.3 : 0.4;
         world.controls().enableZoom = false;
         world.controls().enablePan = false;
 
-        // Use high-resolution 50m TopoJSON so Iberia / UK / small nations render correctly
-        fetch('https://unpkg.com/world-atlas@2.0.2/countries-50m.json')
-            .then(res => res.json())
-            .then(topoData => {
-                if (typeof topojson !== 'undefined') {
-                    const geoData = topojson.feature(topoData, topoData.objects.countries).features;
-                    world.hexPolygonsData(geoData);
-                }
-            })
-            .catch(() => {
-                // Fallback to 110m if CDN fails
-                fetch('https://unpkg.com/world-atlas@2.0.2/countries-110m.json')
-                    .then(r => r.json())
-                    .then(topoData => {
-                        if (typeof topojson !== 'undefined') {
-                            const geoData = topojson.feature(topoData, topoData.objects.countries).features;
-                            world.hexPolygonsData(geoData);
-                        }
-                    });
-            });
+        // Fetch and apply geo data; fallback ensures offline resilience
+        const applyGeo = (topoData) => {
+            if (typeof topojson !== 'undefined') {
+                const geoData = topojson.feature(topoData, topoData.objects.countries).features;
+                world.hexPolygonsData(geoData);
+            }
+        };
+
+        fetch(topoUrl)
+            .then(r => r.json())
+            .then(applyGeo)
+            .catch(() => fetch(topoFallUrl).then(r => r.json()).then(applyGeo));
+
+        // Resize globe if window resizes (e.g. orientation change on mobile)
+        window.addEventListener('resize', () => {
+            const newSize = Math.min(globeViz.parentElement.offsetWidth,
+                window.innerWidth <= 768 ? 380 : 600);
+            world.width(newSize).height(newSize);
+        });
     }
 
     // --- 4. Solid Background Text Theme Logic (Removed, Keeping Default Dark) ---

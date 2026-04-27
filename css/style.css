@@ -488,12 +488,11 @@ html {
 .map-section {
     background-color: #0f0f0f;
     background-image: radial-gradient(circle at center, #020513 0%, #0f0f0f 70%);
-    /* Fades seamlessly into adjacent sections */
     padding: 100px 20px;
     position: relative;
     z-index: 10;
-    overflow: hidden;
-    /* Keeps shooting stars bounded */
+    overflow: hidden;  /* Keeps shooting stars + globe bounded */
+    box-sizing: border-box;
 }
 
 /* Twinkling Star Layer */
@@ -599,14 +598,12 @@ html {
     position: relative;
     width: 100%;
     max-width: 600px;
-    /* slightly larger for WebGL */
     height: 600px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: grab;
-    /* Globe.gl creates its own scene */
 }
 
 .map-wrapper:active {
@@ -619,6 +616,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden; /* prevent internal canvas from overflowing */
 }
 
 .map-point {
@@ -1044,13 +1042,18 @@ html {
         animation: pulse 2s infinite;
     }
 
-    /* Mapeamento 3D: Reduz a caixa e altura para criar margem nas bordas */
+    /* Mapeamento 3D: Centered, never touches screen edges */
     .map-wrapper {
-        width: 90vw;
-        max-width: 90vw;
-        height: 90vw;
-        max-height: 90vw;
+        width: calc(100vw - 40px);  /* 20px margin each side */
+        max-width: calc(100vw - 40px);
+        height: calc(100vw - 40px); /* square aspect ratio */
+        max-height: 420px;          /* cap on larger phones */
         margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .map-section {
+        padding: 60px 20px;
     }
 
     .map-title {
