@@ -607,8 +607,8 @@ html {
     cursor: grab;
     /* CSS sphere: dark radial gradient + circle clip replaces the WebGL showGlobe sphere */
     border-radius: 50%;
-    background: radial-gradient(circle at 38% 38%, #0d1f141b 0%, #050d0a2a 55%, #020804 100%);
-    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(21, 195, 107, 0.08);
+    background: radial-gradient(circle at 38% 38%, #0d1f1400 0%, #050d0a00 55%, #02080400 100%);
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0), 0 0 50px rgba(0, 0, 0, 0);
     overflow: hidden;
     /* clips the WebGL canvas to the circle */
 }
