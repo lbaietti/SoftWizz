@@ -36,12 +36,6 @@ html {
     z-index: 1000;
 }
 
-.navbar .logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-main);
-}
-
 .menu-horizontal {
     display: flex;
     gap: 30px;
