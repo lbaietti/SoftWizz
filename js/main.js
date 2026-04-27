@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             // ── Hex polygon land layer ─────────────────────────────────────────
             .hexPolygonResolution(hexRes)
             .hexPolygonMargin(isMobile ? 0.45 : 0.25)
-            .hexPolygonAltitude(0)            // skip extrusion — saves GPU fill
+            .hexPolygonAltitude(0.003)        // must be > 0 to avoid z-fighting with globe sphere
             .hexPolygonColor(() => 'rgba(21,195,107,0.85)')
             // ── HTML markers ──────────────────────────────────────────────────
             .htmlElementsData(locations)  // markers visible on all devices
