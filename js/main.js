@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .atmosphereAltitude(isMobile ? 0.12 : 0.18)
             // ── Hex polygon land layer ─────────────────────────────────────────
             .hexPolygonResolution(hexRes)
-            .hexPolygonMargin(isMobile ? 0.3 : 0.25)
+            .hexPolygonMargin(isMobile ? 0.45 : 0.25)
             .hexPolygonAltitude(0)            // skip extrusion — saves GPU fill
             .hexPolygonColor(() => 'rgba(21,195,107,0.85)')
             // ── HTML markers ──────────────────────────────────────────────────
@@ -321,6 +321,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
         globeMat.emissive.setHex(0x000000);
         globeMat.opacity = 0.97;
         globeMat.transparent = true;
+
+        // Fix Retina/HiDPI shimmer: render at actual device pixel ratio (capped at 2× for perf)
+        world.renderer().setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        // Re-apply size after pixel ratio change so canvas dimensions stay correct
+        world.width(wrapperSize).height(wrapperSize);
 
         // Controls
         world.controls().autoRotate = true;
