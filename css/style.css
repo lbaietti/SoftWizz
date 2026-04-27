@@ -487,7 +487,7 @@ html {
 /* --- SECTION 2: Interactive Map --- */
 .map-section {
     background-color: #0f0f0f;
-    background-image: radial-gradient(circle at center, #ffffff 0%, #0f0f0f00 70%);
+    background-image: radial-gradient(circle at center, #020513 0%, #0f0f0f 70%);
     padding: 100px 20px;
     position: relative;
     z-index: 10;
@@ -598,8 +598,8 @@ html {
 .map-wrapper {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    height: 600px;
+    max-width: 700px;
+    height: 700px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -607,8 +607,8 @@ html {
     cursor: grab;
     /* CSS sphere: dark radial gradient + circle clip replaces the WebGL showGlobe sphere */
     border-radius: 50%;
-    background: radial-gradient(circle at 38% 38%, #0d1f141b 0%, #050d0a2a 55%, #02080421 100%);
-    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.205), 0 0 50px rgba(21, 195, 108, 0.031);
+    background: radial-gradient(circle at 38% 38%, #0d1f141b 0%, #050d0a2a 55%, #020804 100%);
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(21, 195, 107, 0.08);
     overflow: hidden;
     /* clips the WebGL canvas to the circle */
 }
