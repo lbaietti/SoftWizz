@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         // Adaptive quality: mobile gets a lighter render (faster load, less GPU pressure)
         const isMobile = window.innerWidth <= 680;
-        const hexRes = isMobile ? 3 : 4;    // res 3 is ~4× cheaper than res 4
+        const hexRes = 3;    // res 3 = bigger, fewer dots — 4× lighter than res 4
         const topoUrl = isMobile
             ? 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json'
             : 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json';
@@ -306,7 +306,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .hexPolygonAltitude(0)            // skip extrusion — saves GPU fill
             .hexPolygonColor(() => 'rgba(21,195,107,0.85)')
             // ── HTML markers ──────────────────────────────────────────────────
-            .htmlElementsData(isMobile ? [] : locations)  // hide markers on mobile (overflow risk)
+            .htmlElementsData(locations)  // markers visible on all devices
             .htmlLat(d => d.lat)
             .htmlLng(d => d.lng)
             .htmlAltitude(0.06)
