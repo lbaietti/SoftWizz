@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         // --- Smooth Anchor Internal Navigation using Lenis ---
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                
+
                 const target = document.querySelector(targetId);
                 if (target) {
                     e.preventDefault();
@@ -265,10 +265,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const globeViz = document.getElementById('globe-viz');
     if (globeViz && typeof Globe !== 'undefined') {
         const locations = [
-            { id: 'point-brazil',   lat: -14.2, lng: -51.9 },
-            { id: 'point-portugal', lat:  39.4,  lng:  -8.2 },
-            { id: 'point-uk',       lat:  54.0,  lng:  -2.5 },
-            { id: 'point-germany',  lat:  51.2,  lng:  10.5 }
+            { id: 'point-brazil', lat: -14.2, lng: -51.9 },
+            { id: 'point-portugal', lat: 39.4, lng: -8.2 },
+            { id: 'point-uk', lat: 54.0, lng: -2.5 },
+            { id: 'point-germany', lat: 51.2, lng: 10.5 }
         ];
 
         locations.forEach(loc => {
@@ -281,9 +281,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         });
 
         // Adaptive quality: mobile gets a lighter render (faster load, less GPU pressure)
-        const isMobile = window.innerWidth <= 768;
-        const hexRes      = isMobile ? 3 : 4;    // res 3 is ~4× cheaper than res 4
-        const topoUrl     = isMobile
+        const isMobile = window.innerWidth <= 780;
+        const hexRes = isMobile ? 3 : 4;    // res 3 is ~4× cheaper than res 4
+        const topoUrl = isMobile
             ? 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json'
             : 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json';
         const topoFallUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json';
@@ -361,7 +361,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         termWindow.addEventListener('click', () => {
             mobileInput.focus();
         });
-        
+
         mobileInput.addEventListener('input', () => {
             const val = mobileInput.value.toLowerCase();
             if (val.length > 0) {
@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 if (char === 'y') code = 'KeyY';
                 else if (char === 'n') code = 'KeyN';
                 else if (char === ' ') code = 'Space';
-                
+
                 if (code) {
                     window.dispatchEvent(new KeyboardEvent('keydown', { code: code, key: char }));
                 }
@@ -420,7 +420,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         const line2 = document.createElement('div');
                         line2.className = 'term-line';
                         line2.style.color = '#fff';
-                        line2.innerHTML = `Estudante de Engenharia Informática em Lisboa que nas horas vagas presta serviços na área da Tecnologia da Informação e Desenvolvimento Web para pequenas e médias empresas com um valor acessível.`;
+                        line2.innerHTML = `Estudante de Engenharia Informática em Lisboa que nas horas vagas presta serviços na área da Tecnologia da Informação e Desenvolvimento Web para pequenas e médias empresas.`;
                         termBody.appendChild(line2);
 
                         // 3. Ask to continue
@@ -678,11 +678,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // Zoom-in effect when section enters viewport
     // Mudamos o alvo de .services-slider para .slider-container para evitar bugar o cálculo de "pin" (Pinning)
-    gsap.fromTo(".slider-container", 
-        { scale: 0.75, borderRadius: "60px", opacity: 0 }, 
+    gsap.fromTo(".slider-container",
+        { scale: 0.75, borderRadius: "60px", opacity: 0 },
         {
-            scale: 1, 
-            borderRadius: "0px", 
+            scale: 1,
+            borderRadius: "0px",
             opacity: 1,
             ease: "power2.out",
             scrollTrigger: {
@@ -701,7 +701,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             scrollTrigger: {
                 trigger: ".services-slider",
                 pin: true,
-                scrub: 1, 
+                scrub: 1,
                 snap: 1 / (slides.length - 1),
                 end: () => "+=" + sliderContainer.offsetWidth
             }
@@ -713,7 +713,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             let text = slide.querySelector(".slide-content h3");
 
             if (bg) {
-                gsap.fromTo(bg, 
+                gsap.fromTo(bg,
                     { scale: 1 },
                     {
                         scale: 1.25,
@@ -816,7 +816,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 mouseY = e.touches[0].clientY - rect.top;
             }
         }, { passive: true });
-        
+
         window.addEventListener('touchend', () => {
             mouseX = -1000; mouseY = -1000;
         });
@@ -891,42 +891,42 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
             const btn = this.querySelector('button[type="submit"]');
             btn.textContent = 'Enviando...';
             btn.disabled = true;
-            
+
             // Submit form data using Fetch to Web3Forms API
             const formData = new FormData(this);
             fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 body: formData
             })
-            .then(async (response) => {
-                let json = await response.json();
-                if (response.status == 200) {
-                    btn.textContent = 'A redirecionar...';
-                    btn.style.backgroundColor = '#15c36b';
-                    contactForm.reset();
-                    // Redireciona de imediato para a página de sucesso
-                    setTimeout(() => {
-                        window.location.href = './orcamento/sucesso.html';
-                    }, 500);
-                } else {
-                    // Significa que faltou colocar a Access_Key correta no index.html (ou o servidor da Web3Forms rejeitou)
-                    btn.textContent = 'Chave Web3Forms Inválida.';
-                    btn.style.backgroundColor = '#ffbd2e';
+                .then(async (response) => {
+                    let json = await response.json();
+                    if (response.status == 200) {
+                        btn.textContent = 'A redirecionar...';
+                        btn.style.backgroundColor = '#15c36b';
+                        contactForm.reset();
+                        // Redireciona de imediato para a página de sucesso
+                        setTimeout(() => {
+                            window.location.href = './orcamento/sucesso.html';
+                        }, 500);
+                    } else {
+                        // Significa que faltou colocar a Access_Key correta no index.html (ou o servidor da Web3Forms rejeitou)
+                        btn.textContent = 'Chave Web3Forms Inválida.';
+                        btn.style.backgroundColor = '#ffbd2e';
+                        btn.disabled = false;
+                        console.log("Erro da Web3Forms:", json);
+                    }
+                })
+                .catch(error => {
+                    btn.textContent = 'Erro de Conexão.';
                     btn.disabled = false;
-                    console.log("Erro da Web3Forms:", json);
-                }
-            })
-            .catch(error => {
-                btn.textContent = 'Erro de Conexão.';
-                btn.disabled = false;
-                console.log(error);
-            });
+                    console.log(error);
+                });
         });
     }
 });
