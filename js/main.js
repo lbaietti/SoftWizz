@@ -265,50 +265,80 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const globeViz = document.getElementById('globe-viz');
     if (globeViz && typeof Globe !== 'undefined') {
         const locations = [
-            { id: 'point-brazil', lat: -10, lng: -55 },
-            { id: 'point-portugal', lat: 39, lng: -8 },
-            { id: 'point-uk', lat: 55, lng: -3 },
-            { id: 'point-germany', lat: 51, lng: 10 }
+            { id: 'point-brazil',   lat: -14.2, lng: -51.9 },
+            { id: 'point-portugal', lat:  39.4,  lng:  -8.2 },
+            { id: 'point-uk',       lat:  54.0,  lng:  -2.5 },
+            { id: 'point-germany',  lat:  51.2,  lng:  10.5 }
         ];
 
         locations.forEach(loc => {
             loc.el = document.getElementById(loc.id);
-            if (loc.el) loc.el.style.display = 'block'; // Make visible when appended by Globe.gl
+            if (loc.el) {
+                loc.el.style.display = 'block';
+                // Each card reveals on hover via CSS; keep pointer events active
+                loc.el.style.pointerEvents = 'auto';
+            }
         });
 
         // Initialize Globe
+        // Resolution 4 = ~4× more hexagons than 3, needed for small countries (e.g. Portugal)
+        // countries-50m is higher detail than 110m — essential for Iberian/Western-European accuracy
         const world = Globe()(globeViz)
             .backgroundColor('rgba(0,0,0,0)')
-            .showGlobe(false)
+            .showGlobe(true)
+            .globeImageUrl(null)          // no texture — pure color fill
             .showAtmosphere(true)
             .atmosphereColor('#15c36b')
-            .atmosphereAltitude(0.15)
-            .hexPolygonResolution(3)
-            .hexPolygonMargin(0.3)
-            .hexPolygonColor(() => '#15c36b')
+            .atmosphereAltitude(0.18)
+            // ── Hex polygon land layer ──────────────────────────────────────────
+            .hexPolygonResolution(4)          // key fix: enough hexagons for Portugal
+            .hexPolygonMargin(0.25)           // tighter margin → denser dot grid
+            .hexPolygonAltitude(0.004)        // slight extrusion for depth
+            .hexPolygonColor(() => `rgba(21,195,107,0.85)`)
+            // ── HTML markers ───────────────────────────────────────────────────
             .htmlElementsData(locations)
+            .htmlLat(d => d.lat)
+            .htmlLng(d => d.lng)
+            .htmlAltitude(0.06)
             .htmlElement(d => {
-                // Ensure card styles pop up nicely centered on the point
                 if (d.el) {
                     d.el.style.transform = 'translate(-50%, -50%)';
-                    d.el.style.pointerEvents = 'auto'; // allow hover
                 }
                 return d.el;
             });
 
-        // Override controls for auto-rotation and disable zoom
-        world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 0.5;
-        world.controls().enableZoom = false;
+        // Darken the globe sphere using the globeMaterial getter (no separate THREE import needed)
+        const globeMat = world.globeMaterial();
+        globeMat.color.setHex(0x080f0b);
+        globeMat.emissive.setHex(0x000000);
+        globeMat.opacity = 0.97;
+        globeMat.transparent = true;
 
-        // Fetch data and populate
-        fetch('https://unpkg.com/world-atlas@2.0.2/countries-110m.json')
+        // Controls: auto-rotate, no zoom
+        world.controls().autoRotate = true;
+        world.controls().autoRotateSpeed = 0.4;
+        world.controls().enableZoom = false;
+        world.controls().enablePan = false;
+
+        // Use high-resolution 50m TopoJSON so Iberia / UK / small nations render correctly
+        fetch('https://unpkg.com/world-atlas@2.0.2/countries-50m.json')
             .then(res => res.json())
             .then(topoData => {
                 if (typeof topojson !== 'undefined') {
                     const geoData = topojson.feature(topoData, topoData.objects.countries).features;
                     world.hexPolygonsData(geoData);
                 }
+            })
+            .catch(() => {
+                // Fallback to 110m if CDN fails
+                fetch('https://unpkg.com/world-atlas@2.0.2/countries-110m.json')
+                    .then(r => r.json())
+                    .then(topoData => {
+                        if (typeof topojson !== 'undefined') {
+                            const geoData = topojson.feature(topoData, topoData.objects.countries).features;
+                            world.hexPolygonsData(geoData);
+                        }
+                    });
             });
     }
 
