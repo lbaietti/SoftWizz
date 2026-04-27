@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         const isMobile = window.innerWidth <= 680;
         // 50m on ALL devices — 110m was causing country deformation on mobile
-        const topoUrl     = 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json';
+        const topoUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json';
         const topoFallUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json';
 
         // Size the globe canvas to fit the actual wrapper element
@@ -315,8 +315,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         // Retina/HiDPI: render at device pixel ratio so dots are crisp (capped at 2× for perf)
         world.renderer().setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        // Enable true alpha transparency so the WebGL canvas has no black background/circle on mobile
-        world.renderer().setClearColor(0x000000, 0);
         world.width(wrapperSize).height(wrapperSize);
 
         // Controls
