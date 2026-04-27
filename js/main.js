@@ -315,6 +315,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         // Retina/HiDPI: render at device pixel ratio so dots are crisp (capped at 2× for perf)
         world.renderer().setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        // Enable true alpha transparency so the WebGL canvas has no black background/circle on mobile
+        world.renderer().setClearColor(0x000000, 0);
         world.width(wrapperSize).height(wrapperSize);
 
         // Controls
