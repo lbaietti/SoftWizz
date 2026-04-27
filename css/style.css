@@ -1087,3 +1087,56 @@ html {
         padding: 40px 20px;
     }
 }
+
+/* --- GDPR Banner --- */
+.gdpr-banner {
+    position: fixed;
+    bottom: -150px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(15, 15, 15, 0.95);
+    border-top: 1px solid var(--green-light);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    transition: bottom 0.5s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.gdpr-banner.show {
+    bottom: 0;
+}
+
+.gdpr-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.gdpr-content p {
+    color: #e5e7eb;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.gdpr-content p a {
+    color: var(--green-light);
+    text-decoration: underline;
+}
+
+.btn-gdpr {
+    padding: 10px 20px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .gdpr-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}

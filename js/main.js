@@ -924,4 +924,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
         });
     }
+
+    // --- 8. GDPR Banner Logic ---
+    const gdprBanner = document.getElementById('gdpr-banner');
+    const acceptGdprBtn = document.getElementById('accept-gdpr');
+    const closeGdprBtn = document.getElementById('close-gdpr');
+
+    if (gdprBanner && acceptGdprBtn) {
+        if (!localStorage.getItem('softwizz_gdpr_accepted')) {
+            setTimeout(() => {
+                gdprBanner.classList.add('show');
+            }, 1000); // Exibe 1 segundo após entrar
+        }
+
+        acceptGdprBtn.addEventListener('click', () => {
+            localStorage.setItem('softwizz_gdpr_accepted', 'true');
+            gdprBanner.classList.remove('show');
+        });
+
+        if (closeGdprBtn) {
+            closeGdprBtn.addEventListener('click', () => {
+                gdprBanner.classList.remove('show');
+            });
+        }
+    }
 });
