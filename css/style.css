@@ -990,10 +990,6 @@ html {
     gap: 40px;
 }
 
-.footer-col {
-    flex: 1;
-    min-width: 250px;
-}
 
 .footer-col h3 {
     font-size: 1.5rem;
