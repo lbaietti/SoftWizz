@@ -487,7 +487,7 @@ html {
 /* --- SECTION 2: Interactive Map --- */
 .map-section {
     background-color: #0f0f0f;
-    background-image: radial-gradient(circle at center, #020513 0%, #0f0f0f 70%);
+    background-image: radial-gradient(circle at center, #ffffff 0%, #0f0f0f00 70%);
     padding: 100px 20px;
     position: relative;
     z-index: 10;
