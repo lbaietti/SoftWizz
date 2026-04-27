@@ -21,6 +21,9 @@
     <!-- Globe.gl & TopoJSON -->
     <script src="https://unpkg.com/topojson-client@3"></script>
     <script src="https://unpkg.com/globe.gl"></script>
+
+    <!-- Web3Forms hCaptcha -->
+    <script src="https://web3forms.com/client/script.js" async defer></script>
 </head>
 
 <body>
@@ -127,9 +130,10 @@
                     <div class="map-point" id="point-portugal">
                         <div class="pulse-dot"></div>
                         <div class="project-card">
-                            <h3>Landing Page ASP Solicitadoria</h3>
+                            <h3>Landing Page </h3>
                             <p>Lisbon, Portugal</p>
-                            <a href="#" class="view-project-link">Ver Projecto <span>→</span></a>
+                            <a href="https://lbaietti.github.io/Ana_Sara_Pereira_Solicitadora/"
+                                class="view-project-link">Ver Projecto <span></span></a>
                         </div>
                     </div>
 
@@ -228,6 +232,7 @@
                     <textarea id="message" name="message" placeholder="Como posso ajudar com a sua ideia?" rows="5"
                         required></textarea>
                 </div>
+                <div class="h-captcha" data-captcha="true"></div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 10px; align-self: center;">Enviar
                     Mensagem</button>
             </form>

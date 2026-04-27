@@ -907,7 +907,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         contactForm.reset();
                         // Redireciona de imediato para a página de sucesso
                         setTimeout(() => {
-                            window.location.href = './orcamento/sucesso.html';
+                            window.location.href = './src/sucesso.html';
                         }, 500);
                     } else {
                         // Significa que faltou colocar a Access_Key correta no index.html (ou o servidor da Web3Forms rejeitou)
