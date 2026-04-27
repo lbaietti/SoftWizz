@@ -280,12 +280,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
             }
         });
 
-        // Adaptive quality: mobile gets a lighter render (faster load, less GPU pressure)
         const isMobile = window.innerWidth <= 680;
-        const hexRes = 3;    // res 3 = bigger, fewer dots — 4× lighter than res 4
-        const topoUrl = isMobile
-            ? 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json'
-            : 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json';
+        // 50m on ALL devices — 110m was causing country deformation on mobile
+        const topoUrl     = 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json';
         const topoFallUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json';
 
         // Size the globe canvas to fit the actual wrapper element
@@ -295,18 +292,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .width(wrapperSize)
             .height(wrapperSize)
             .backgroundColor('rgba(0,0,0,0)')
-            .showGlobe(true)
-            .globeImageUrl(null)
+            // showGlobe(false) — eliminates z-fighting with hex layer entirely.
+            // The dark sphere look is achieved with a CSS radial-gradient on .globe-viz.
+            .showGlobe(false)
             .showAtmosphere(true)
             .atmosphereColor('#15c36b')
             .atmosphereAltitude(isMobile ? 0.12 : 0.18)
             // ── Hex polygon land layer ─────────────────────────────────────────
-            .hexPolygonResolution(hexRes)
+            .hexPolygonResolution(3)           // res 3 = bigger dots, fewer total, works on all screens
             .hexPolygonMargin(isMobile ? 0.45 : 0.25)
-            .hexPolygonAltitude(0.003)        // must be > 0 to avoid z-fighting with globe sphere
-            .hexPolygonColor(() => 'rgba(21,195,107,0.85)')
+            .hexPolygonAltitude(0)             // safe at 0 — no sphere below to conflict with
+            .hexPolygonColor(() => 'rgba(21,195,107,0.9)')
             // ── HTML markers ──────────────────────────────────────────────────
-            .htmlElementsData(locations)  // markers visible on all devices
+            .htmlElementsData(locations)
             .htmlLat(d => d.lat)
             .htmlLng(d => d.lng)
             .htmlAltitude(0.06)
@@ -315,16 +313,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 return d.el;
             });
 
-        // Darken sphere base via material getter (no global THREE needed)
-        const globeMat = world.globeMaterial();
-        globeMat.color.setHex(0x080f0b);
-        globeMat.emissive.setHex(0x000000);
-        globeMat.opacity = 0.97;
-        globeMat.transparent = true;
-
-        // Fix Retina/HiDPI shimmer: render at actual device pixel ratio (capped at 2× for perf)
+        // Retina/HiDPI: render at device pixel ratio so dots are crisp (capped at 2× for perf)
         world.renderer().setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        // Re-apply size after pixel ratio change so canvas dimensions stay correct
         world.width(wrapperSize).height(wrapperSize);
 
         // Controls
