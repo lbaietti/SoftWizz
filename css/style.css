@@ -1091,20 +1091,21 @@ html {
 /* --- GDPR Banner --- */
 .gdpr-banner {
     position: fixed;
-    bottom: -150px;
+    bottom: 0;
     left: 0;
     width: 100%;
     background-color: rgba(15, 15, 15, 0.95);
     border-top: 1px solid var(--green-light);
     box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
     z-index: 10000;
-    transition: bottom 0.5s ease;
+    transform: translateY(110%);
+    transition: transform 0.5s ease;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
 
 .gdpr-banner.show {
-    bottom: 0;
+    transform: translateY(0);
 }
 
 .gdpr-content {
