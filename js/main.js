@@ -898,7 +898,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 body: formData
-            })
+                })
                 .then(async (response) => {
                     let json = await response.json();
                     if (response.status == 200) {
