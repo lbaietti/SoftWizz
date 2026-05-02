@@ -921,7 +921,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     btn.textContent = 'Erro de Conexão.';
                     btn.disabled = false;
                     console.log(error);
-                });
+            });
         });
     }
 
